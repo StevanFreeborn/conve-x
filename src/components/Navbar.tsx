@@ -6,10 +6,12 @@ export default function Navbar() {
     <nav className='flex items-center justify-between p-5 shadow-md'>
       <ul className='flex items-center gap-4'>
         <li>
-          conve
-          <span className='font-bold italic text-4xl text-primary-accent'>
-            X
-          </span>
+          <Link href='/'>
+            conve
+            <span className='font-bold italic text-4xl text-primary-accent'>
+              X
+            </span>
+          </Link>
         </li>
       </ul>
       <ul className='flex items-center gap-4'>
