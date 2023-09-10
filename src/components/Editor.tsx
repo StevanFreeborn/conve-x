@@ -1,9 +1,22 @@
 'use client';
 
+import { useCodeMirror } from '@/hooks';
+import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
+import { languages } from '@codemirror/language-data';
+import { EditorState } from '@codemirror/state';
+import { basicSetup } from 'codemirror';
 import { useState } from 'react';
 
 export default function Editor() {
+  const doc = [''];
+  const extensions = [
+    basicSetup,
+    markdown({ base: markdownLanguage, codeLanguages: languages }),
+    EditorState.tabSize.of(2),
+  ];
+
   const [mode, setMode] = useState<'write' | 'preview'>('write');
+  const { editorRef, editorView } = useCodeMirror({ doc, extensions });
 
   return (
     <form className='flex flex-col shadow-md rounded-md dark:bg-secondary-gray border border-gray-600'>
@@ -28,7 +41,9 @@ export default function Editor() {
         </div>
         <div></div>
       </div>
-      <div></div>
+      <div className='p-4'>
+        <div ref={editorRef}></div>
+      </div>
       <div className='flex items-center justify-end'>
         <button type='submit'>Post</button>
       </div>
