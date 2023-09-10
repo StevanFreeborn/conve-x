@@ -1,5 +1,5 @@
 import Navbar from '@/components/Navbar';
-import ConvexProvider from '@/providers';
+import { ConvexProvider, NextThemesProvider } from '@/providers';
 import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -17,20 +17,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider
-      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+    <html
+      lang='en'
+      className='w-full h-full'
+      suppressHydrationWarning
     >
-      <ConvexProvider>
-        <html
-          lang='en'
-          className='w-full h-full'
+      <body
+        className={`w-full h-full flex flex-col bg-white text-primary-gray dark:bg-primary-gray dark:text-white ${inter.className}`}
+      >
+        <ClerkProvider
+          publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
         >
-          <body className={`w-full h-full flex flex-col ${inter.className}`}>
-            <Navbar />
-            <div className='p-4'>{children}</div>
-          </body>
-        </html>
-      </ConvexProvider>
-    </ClerkProvider>
+          <ConvexProvider>
+            <NextThemesProvider>
+              <Navbar />
+              <div className='p-4'>{children}</div>
+            </NextThemesProvider>
+          </ConvexProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }

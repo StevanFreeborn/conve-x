@@ -3,6 +3,7 @@
 import { useAuth } from '@clerk/nextjs';
 import { ConvexReactClient } from 'convex/react';
 import { ConvexProviderWithClerk } from 'convex/react-clerk';
+import { ThemeProvider } from 'next-themes';
 import { ReactNode } from 'react';
 
 const CONVEX_URL = process.env.NEXT_PUBLIC_CONVEX_URL;
@@ -13,7 +14,7 @@ if (CONVEX_URL === undefined) {
 
 const client = new ConvexReactClient(CONVEX_URL);
 
-export default function ConvexProvider({ children }: { children: ReactNode }) {
+export function ConvexProvider({ children }: { children: ReactNode }) {
   return (
     <ConvexProviderWithClerk
       client={client}
@@ -21,5 +22,17 @@ export default function ConvexProvider({ children }: { children: ReactNode }) {
     >
       {children}
     </ConvexProviderWithClerk>
+  );
+}
+
+export function NextThemesProvider({ children }: { children: ReactNode }) {
+  return (
+    <ThemeProvider
+      attribute='class'
+      defaultTheme='light'
+      enableSystem
+    >
+      {children}
+    </ThemeProvider>
   );
 }
