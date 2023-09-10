@@ -4,7 +4,14 @@ import Link from 'next/link';
 export default function Navbar() {
   return (
     <nav className='flex items-center justify-between p-5 shadow-md'>
-      <ul className='flex items-center gap-4'></ul>
+      <ul className='flex items-center gap-4'>
+        <li>
+          conve
+          <span className='font-bold italic text-4xl text-primary-accent'>
+            X
+          </span>
+        </li>
+      </ul>
       <ul className='flex items-center gap-4'>
         <SignedIn>
           <li>
