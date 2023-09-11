@@ -1,10 +1,11 @@
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut, UserButton, currentUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import { BiSolidMessageSquareAdd } from 'react-icons/bi';
-import ProfileLink from './ProfileLink';
 import ThemeButton from './ThemeButton';
 
-export default function Navbar() {
+export default async function Navbar() {
+  const user = await currentUser();
+
   return (
     <nav className='flex items-center justify-between p-5 shadow-md dark:bg-secondary-gray'>
       <ul className='flex items-center gap-4'>
@@ -31,7 +32,7 @@ export default function Navbar() {
             <Link href='#'>Following</Link>
           </li>
           <li>
-            <ProfileLink />
+            <Link href={`/profile/${user?.id}`}>Profile</Link>
           </li>
           <li>
             <Link
