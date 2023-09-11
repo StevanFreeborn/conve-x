@@ -19,7 +19,9 @@ export default function UserPosts({ user }: { user: UserDto }) {
 
   const postsWithUser = pager.results.map(post => ({ ...post, user }));
 
-  if (postsWithUser.length == 0) {
+  console.log(postsWithUser);
+
+  if (pager.isLoading === false && postsWithUser.length == 0) {
     return (
       <div className='flex flex-col items-center justify-center border-t border-gray-600 w-full h-full'>
         <div className='flex flex-col items-center gap-2'>
@@ -38,17 +40,19 @@ export default function UserPosts({ user }: { user: UserDto }) {
   }
 
   return (
-    <div className='flex flex-col items-center w-full h-full'>
-      {postsWithUser.map(post => (
-        <div
-          key={post._id}
-          className='w-full h-full border border-b-0 border-gray-600 last:border-b'
-        >
-          <Post post={post} />
-        </div>
-      ))}
+    <div className='flex flex-col items-center w-full'>
+      <div className='flex flex-col items-center w-full'>
+        {postsWithUser.map(post => (
+          <div
+            key={post._id}
+            className='w-full border border-t-0 border-gray-600 first:border-t last:rounded-b-md p-1'
+          >
+            <Post post={post} />
+          </div>
+        ))}
+      </div>
       {pager.isLoading ? (
-        <div className='flex items-center gap-2 p-5'>
+        <div className='flex w-full items-center justify-center gap-2 p-5 border-t border-gray-600'>
           <SpinningLoader className='animate-spin w-5 h-5' />
           Loading...
         </div>

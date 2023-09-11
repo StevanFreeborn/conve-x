@@ -1,6 +1,6 @@
 import { SignedIn, SignedOut, currentUser } from '@clerk/nextjs';
 import Link from 'next/link';
-import { BiSolidMessageSquareAdd } from 'react-icons/bi';
+import { BiPlus, BiSolidMessageSquare } from 'react-icons/bi';
 import ThemeButton from './ThemeButton';
 import UserButton from './UserButton';
 
@@ -36,12 +36,15 @@ export default async function Navbar() {
             <Link href={`/profile/${user?.id}`}>Profile</Link>
           </li>
           <li>
-            <Link
-              href='/posts/add'
-              className='text-primary-accent'
-            >
-              <BiSolidMessageSquareAdd className='w-10 h-10' />
-            </Link>
+            <div className='mx-4'>
+              <Link
+                href='/posts/add'
+                className='relative'
+              >
+                <BiSolidMessageSquare className='absolute w-10 h-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary-accent' />
+                <BiPlus className='absolute w-5 h-5 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white' />
+              </Link>
+            </div>
           </li>
         </SignedIn>
       </ul>
