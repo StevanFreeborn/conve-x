@@ -1,17 +1,9 @@
 import Image from 'next/image';
 import { AiFillCalendar } from 'react-icons/ai';
 import { Doc, Id } from '../../convex/_generated/dataModel';
+import { UserDto } from '@/app/types';
 
-export default function UserProfile({
-  user,
-}: {
-  user: {
-    _id: Id<'users'>;
-    _creationTime: number;
-    clerkUsername: string | null;
-    clerkImageUrl: string;
-  };
-}) {
+export default function UserProfile({ user }: { user: UserDto }) {
   const username = user.clerkUsername ?? user._id;
   const userCreatedDate = new Date(user._creationTime);
   const monthJoined = userCreatedDate.toLocaleString(undefined, {

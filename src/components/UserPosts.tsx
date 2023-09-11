@@ -1,21 +1,12 @@
 'use client';
 
+import { UserDto } from '@/app/types';
 import { usePaginatedQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
-import { Id } from '../../convex/_generated/dataModel';
 import Post from './Post';
 import SpinningLoader from './SpinningLoader';
 
-export default function UserPosts({
-  user,
-}: {
-  user: {
-    _id: Id<'users'>;
-    _creationTime: number;
-    clerkUsername: string | null;
-    clerkImageUrl: string;
-  };
-}) {
+export default function UserPosts({ user }: { user: UserDto }) {
   const PAGE_SIZE = 1;
   const pager = usePaginatedQuery(
     api.posts.getUsersPostById,

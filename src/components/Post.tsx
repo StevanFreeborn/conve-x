@@ -2,19 +2,9 @@ import { Text } from '@codemirror/state';
 import Image from 'next/image';
 import { Doc, Id } from '../../convex/_generated/dataModel';
 import PostContent from './PostContent';
+import { PostWithUserDto } from '@/app/types';
 
-export default function Post({
-  post,
-}: {
-  post: Doc<'posts'> & {
-    user: {
-      _id: Id<'users'>;
-      _creationTime: number;
-      clerkUsername: string | null;
-      clerkImageUrl: string;
-    };
-  };
-}) {
+export default function Post({ post }: { post: PostWithUserDto }) {
   const username = post.user.clerkUsername ?? post.user._id;
   const createdPostDate = new Date(post._creationTime);
   const postYear = createdPostDate.getFullYear();

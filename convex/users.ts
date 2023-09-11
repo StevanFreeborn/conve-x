@@ -1,4 +1,5 @@
 import { v } from 'convex/values';
+import { UserDto } from './../src/app/types/index';
 import {
   QueryCtx,
   internalMutation,
@@ -15,7 +16,7 @@ export async function userQuery(ctx: QueryCtx, clerkUserId: string) {
 
 export const getUserByClerkId = query({
   args: { clerkUserId: v.string() },
-  async handler(ctx, args) {
+  async handler(ctx, args): Promise<UserDto | 'USER_NOT_FOUND'> {
     const user = await userQuery(ctx, args.clerkUserId);
 
     if (user === null) {
