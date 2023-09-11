@@ -1,12 +1,9 @@
 import Navbar from '@/components/Navbar';
 import { ConvexProvider, NextThemesProvider } from '@/providers';
-import { ClerkProvider, SignedIn } from '@clerk/nextjs';
+import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-
-import Link from 'next/link';
-import { BiSolidMessageSquareAdd } from 'react-icons/bi';
 
 const inter = Inter({ subsets: ['latin'] });
 
