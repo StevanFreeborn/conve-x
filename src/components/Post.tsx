@@ -1,8 +1,7 @@
+import { PostWithUserDto } from '@/app/types';
 import { Text } from '@codemirror/state';
 import Image from 'next/image';
-import { Doc, Id } from '../../convex/_generated/dataModel';
 import PostContent from './PostContent';
-import { PostWithUserDto } from '@/app/types';
 
 export default function Post({ post }: { post: PostWithUserDto }) {
   const username = post.user.clerkUsername ?? post.user._id;
@@ -12,6 +11,11 @@ export default function Post({ post }: { post: PostWithUserDto }) {
     month: 'short',
   });
   const dayOfMonth = createdPostDate.getDate();
+
+  // TODO: Posts content should only be allowed to grow to a set height
+  // after which the post's content should be truncated
+  // and we should display a 'more' link to load the post
+  // in an individual page
 
   return (
     <div className='flex w-full h-full gap-4 p-8 bg-white dark:bg-secondary-gray border border-gray-600'>
