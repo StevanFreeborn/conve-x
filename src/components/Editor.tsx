@@ -1,34 +1,38 @@
 'use client';
 
 import { useCodeMirror } from '@/hooks';
-import { darkTheme } from '@/lib/codemirror';
+import { basicDark } from '@/lib/codemirror';
+import { useUser } from '@clerk/nextjs';
 import { indentWithTab } from '@codemirror/commands';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
-import { Compartment, EditorState } from '@codemirror/state';
+import { Compartment, EditorState, Text } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import { basicSetup } from 'codemirror';
+import { useMutation } from 'convex/react';
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import remarkGfm from 'remark-gfm';
+import { useRouter } from 'next/navigation';
+import { FormEvent, useEffect, useState } from 'react';
+import { api } from '../../convex/_generated/api';
+import PostContent from './PostContent';
 
 export default function Editor() {
+  const user = useUser();
   const { theme } = useTheme();
   const editorTheme = new Compartment();
-  const [currentDoc, setCurrentDoc] = useState('');
+  const [currentDoc, setCurrentDoc] = useState(['']);
+  const createPost = useMutation(api.posts.createPost);
+  const router = useRouter();
 
   const doc = [''];
   const extensions = [
     basicSetup,
     markdown({ base: markdownLanguage, codeLanguages: languages }),
     EditorState.tabSize.of(2),
-    editorTheme.of([]),
+    editorTheme.of(basicDark),
     keymap.of([indentWithTab]),
     EditorView.updateListener.of(vu => {
-      setCurrentDoc(vu.state.doc.toString());
+      setCurrentDoc(vu.state.doc.toJSON());
     }),
   ];
 
@@ -42,18 +46,48 @@ export default function Editor() {
 
     if (theme === 'dark') {
       editorView.dispatch({
-        effects: editorTheme.reconfigure([darkTheme]),
+        effects: editorTheme.reconfigure([]),
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme, editorView]);
 
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    try {
+      if (user.isSignedIn !== true) {
+        router.push('/login');
+        return;
+      }
+
+      const result = await createPost({
+        clerkUserId: user.user.id,
+        content: currentDoc,
+      });
+
+      switch (result) {
+        case 'USER_NOT_FOUND':
+        case 'USER_NOT_AUTHORIZED':
+        case 'CANNOT_POST_ON_BEHALF_OF_ANOTHER_USER':
+          throw Error('Unable to create post');
+        default:
+          router.push('/');
+          return;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
-    <form className='flex flex-col shadow-md rounded-md dark:bg-secondary-gray border border-gray-600'>
+    <form
+      onSubmit={handleSubmit}
+      className='flex flex-col flex-1 shadow-md rounded-md dark:bg-secondary-gray border border-gray-600'
+    >
       <div className='flex items-center justify-between rounded-t-md p-4 pb-0 border-b border-gray-600 dark:bg-primary-gray'>
         <div className='flex items-center'>
           <button
-            className='flex items-center justify-center px-3 py-2 rounded-t-md -mb-[1px] disabled:dark:bg-secondary-gray disabled:border disabled:border-gray-600 disabled:border-b-0'
+            className='flex items-center justify-center px-3 py-2 rounded-t-md -mb-[1px] disabled:bg-white disabled:border disabled:border-b-0 disabled:border-gray-600 disabled:dark:bg-secondary-gray'
             disabled={mode === 'write'}
             onClick={() => setMode('write')}
             type='button'
@@ -61,7 +95,7 @@ export default function Editor() {
             Write
           </button>
           <button
-            className='flex items-center justify-center px-3 py-2 rounded-t-md disabled:dark:bg-secondary-gray disabled:border disabled:border-gray-600 disabled:border-b-0'
+            className='flex items-center justify-center px-3 py-2 rounded-t-md -mb-[1px] disabled:bg-white disabled:border disabled:border-b-0 disabled:border-gray-600 disabled:dark:bg-secondary-gray'
             disabled={mode === 'preview'}
             onClick={() => setMode('preview')}
             type='button'
@@ -71,42 +105,27 @@ export default function Editor() {
         </div>
         <div></div>
       </div>
-      <div className='p-4'>
+      <div className='flex flex-col p-4 h-0 flex-grow'>
         <div
-          className={`${mode === 'write' ? '' : 'hidden'}`}
+          className={`${mode === 'write' ? '' : 'hidden'} flex-1 overflow-auto`}
           ref={editorRef}
         ></div>
-        <ReactMarkdown
-          className={`${mode === 'preview' ? '' : 'hidden'}`}
-          remarkPlugins={[remarkGfm]}
-          components={{
-            code({ node, inline, className, children, ...props }) {
-              const match = /language-(\w+)/.exec(className || '');
-              return !inline && match ? (
-                <SyntaxHighlighter
-                  {...props}
-                  style={oneDark}
-                  language={match[1]}
-                  PreTag='div'
-                >
-                  {String(children).replace(/\n$/, '')}
-                </SyntaxHighlighter>
-              ) : (
-                <code
-                  {...props}
-                  className={className}
-                >
-                  {children}
-                </code>
-              );
-            },
-          }}
+        <div
+          className={`${
+            mode === 'preview' ? '' : 'hidden'
+          } flex-1 overflow-auto`}
         >
-          {currentDoc}
-        </ReactMarkdown>
+          <PostContent content={Text.of(currentDoc).toString()} />
+        </div>
       </div>
-      <div className='flex items-center justify-end'>
-        <button type='submit'>Post</button>
+      <div className='flex items-center justify-end p-4 pt-0'>
+        <button
+          type='submit'
+          disabled={!currentDoc.join() || !currentDoc.join().trim()}
+          className='py-1 px-4 bg-primary-accent text-white rounded-md disabled:opacity-50'
+        >
+          Post
+        </button>
       </div>
     </form>
   );

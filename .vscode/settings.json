@@ -4,9 +4,11 @@
     "codemirror",
     "conve",
     "Keymap",
+    "lezer",
     "nextjs",
     "rehype",
     "signup",
-    "svix"
+    "svix",
+    "tailwindcss"
   ]
 }

@@ -1,6 +1,7 @@
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
 import { BiSolidMessageSquareAdd } from 'react-icons/bi';
+import ProfileLink from './ProfileLink';
 import ThemeButton from './ThemeButton';
 
 export default function Navbar() {
@@ -30,7 +31,7 @@ export default function Navbar() {
             <Link href='#'>Following</Link>
           </li>
           <li>
-            <Link href='#'>Profile</Link>
+            <ProfileLink />
           </li>
           <li>
             <Link

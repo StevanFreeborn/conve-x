@@ -44,6 +44,19 @@ export const deleteUser = internalMutation({
       return;
     }
 
+    const userPosts = await ctx.db
+      .query('posts')
+      .withIndex('by_user_id', q => q.eq('userId', userRecord._id))
+      .collect();
+
+    const userPostDeletePromises = [];
+
+    for (const post of userPosts) {
+      userPostDeletePromises.push(ctx.db.delete(post._id));
+    }
+
+    await Promise.all(userPostDeletePromises);
+
     await ctx.db.delete(userRecord._id);
   },
 });
