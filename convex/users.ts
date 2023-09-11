@@ -1,7 +1,37 @@
-import { UserJSON } from '@clerk/nextjs/dist/types/server';
 import { v } from 'convex/values';
-import { Doc } from './_generated/dataModel';
-import { QueryCtx, internalMutation, internalQuery } from './_generated/server';
+import {
+  QueryCtx,
+  internalMutation,
+  internalQuery,
+  query,
+} from './_generated/server';
+
+export async function userQuery(ctx: QueryCtx, clerkUserId: string) {
+  return await ctx.db
+    .query('users')
+    .withIndex('by_clerk_id', q => q.eq('clerkUser.id', clerkUserId))
+    .unique();
+}
+
+export const getUserByClerkId = query({
+  args: { clerkUserId: v.string() },
+  async handler(ctx, args) {
+    return await userQuery(ctx, args.clerkUserId);
+  },
+});
+
+export const getUserById = query({
+  args: { id: v.id('users') },
+  async handler(ctx, args) {
+    const user = await ctx.db.get(args.id);
+
+    if (user === null) {
+      return 'USER_NOT_FOUND';
+    }
+
+    return user;
+  },
+});
 
 export const getUser = internalQuery({
   args: { subject: v.string() },
@@ -10,19 +40,9 @@ export const getUser = internalQuery({
   },
 });
 
-export async function userQuery(
-  ctx: QueryCtx,
-  clerkUserId: string
-): Promise<(Omit<Doc<'users'>, 'clerkUser'> & { clerkUser: UserJSON }) | null> {
-  return await ctx.db
-    .query('users')
-    .withIndex('by_clerk_id', q => q.eq('clerkUser.id', clerkUserId))
-    .unique();
-}
-
 export const updateOrCreateUser = internalMutation({
   args: { clerkUser: v.any() },
-  async handler(ctx, { clerkUser }: { clerkUser: UserJSON }) {
+  async handler(ctx, { clerkUser }) {
     const userRecord = await userQuery(ctx, clerkUser.id);
 
     if (userRecord === null) {

@@ -1,5 +1,6 @@
+import { paginationOptsValidator } from 'convex/server';
 import { v } from 'convex/values';
-import { mutation } from './_generated/server';
+import { mutation, query } from './_generated/server';
 import { userQuery } from './users';
 
 export const createPost = mutation({
@@ -29,5 +30,16 @@ export const createPost = mutation({
       content: args.content,
       parentPostId: args.parentPostId,
     });
+  },
+});
+
+export const getUsersPostById = query({
+  args: { userId: v.id('users'), paginationOpts: paginationOptsValidator },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query('posts')
+      .withIndex('by_user_id', q => q.eq('userId', args.userId))
+      .order('desc')
+      .paginate(args.paginationOpts);
   },
 });

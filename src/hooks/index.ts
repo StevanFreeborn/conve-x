@@ -1,3 +1,4 @@
+import SpinningLoader from '@/components/SpinningLoader';
 import { EditorState, Extension, Text } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 import { useEffect, useRef, useState } from 'react';
@@ -30,7 +31,15 @@ export function useCodeMirror({
     setEditorView(view);
     return () => view.destroy();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editorRef]);
+  }, [editorRef.current]);
 
   return { editorRef, editorView };
+}
+
+export function useMountedEffect() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  return { mounted, Loader: SpinningLoader };
 }

@@ -1,7 +1,8 @@
-import { SignedIn, SignedOut, UserButton, currentUser } from '@clerk/nextjs';
+import { SignedIn, SignedOut, currentUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import { BiSolidMessageSquareAdd } from 'react-icons/bi';
 import ThemeButton from './ThemeButton';
+import UserButton from './UserButton';
 
 export default async function Navbar() {
   const user = await currentUser();
@@ -50,19 +51,7 @@ export default async function Navbar() {
         </li>
         <SignedIn>
           <li>
-            <UserButton
-              appearance={{
-                elements: {
-                  card: 'dark:bg-secondary-gray [&_*]:dark:text-white',
-                  userButtonTrigger:
-                    'border-solid border-2 border-primary-accent focus:shadow-none',
-                },
-              }}
-              userProfileMode='navigation'
-              userProfileUrl='/account'
-              signInUrl='/login'
-              afterSignOutUrl='/'
-            />
+            <UserButton />
           </li>
         </SignedIn>
         <SignedOut>

@@ -17,12 +17,13 @@ import { api } from '../../convex/_generated/api';
 import PostContent from './PostContent';
 
 export default function Editor() {
-  const user = useUser();
+  const { user, isSignedIn } = useUser();
   const { theme } = useTheme();
   const editorTheme = new Compartment();
   const [currentDoc, setCurrentDoc] = useState(['']);
   const createPost = useMutation(api.posts.createPost);
   const router = useRouter();
+  const [creating, setCreating] = useState(false);
 
   const doc = [''];
   const extensions = [
@@ -55,13 +56,15 @@ export default function Editor() {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      if (user.isSignedIn !== true) {
+      if (isSignedIn !== true) {
         router.push('/login');
         return;
       }
 
+      setCreating(true);
+
       const result = await createPost({
-        clerkUserId: user.user.id,
+        clerkUserId: user.id,
         content: currentDoc,
       });
 
@@ -76,6 +79,8 @@ export default function Editor() {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setCreating(false);
     }
   }
 
@@ -121,8 +126,8 @@ export default function Editor() {
       <div className='flex items-center justify-end p-4 pt-0'>
         <button
           type='submit'
-          disabled={!currentDoc.join() || !currentDoc.join().trim()}
-          className='py-1 px-4 bg-primary-accent text-white rounded-md disabled:opacity-50'
+          disabled={!currentDoc.join() || !currentDoc.join().trim() || creating}
+          className='py-1 px-4 bg-primary-accent text-white rounded-md disabled:opacity-50 flex items-center justify-center gap-2'
         >
           Post
         </button>
