@@ -17,8 +17,12 @@ export default function Post({ post }: { post: PostWithUserDto }) {
   // and we should display a 'more' link to load the post
   // in an individual page
 
+  // TODO: Add menu button
+
+  // TODO: Add reply and like buttons
+
   return (
-    <div className='flex w-full h-full gap-4 p-8 bg-white dark:bg-secondary-gray border border-gray-600'>
+    <div className='flex w-full h-full gap-4 p-8 bg-white dark:bg-secondary-gray'>
       <div>
         <Image
           alt='user profile image'

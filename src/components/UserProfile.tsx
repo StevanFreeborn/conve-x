@@ -1,7 +1,6 @@
+import { UserDto } from '@/app/types';
 import Image from 'next/image';
 import { AiFillCalendar } from 'react-icons/ai';
-import { Doc, Id } from '../../convex/_generated/dataModel';
-import { UserDto } from '@/app/types';
 
 export default function UserProfile({ user }: { user: UserDto }) {
   const username = user.clerkUsername ?? user._id;
@@ -24,7 +23,7 @@ export default function UserProfile({ user }: { user: UserDto }) {
               className='rounded-full object-cover border-4 border-primary-accent'
             />
           </div>
-          <div>
+          <div className='text-white'>
             <h1 className='font-bold'>{username}</h1>
             <div className='flex gap-2 items-center text-sm'>
               <AiFillCalendar className='w-4 h-4' />
@@ -33,7 +32,7 @@ export default function UserProfile({ user }: { user: UserDto }) {
           </div>
         </div>
       </div>
-      <div className='h-[50px] bg-white dark:bg-primary-gray pl-5 pr-40 border border-gray-600'></div>
+      <div className='h-[50px] bg-white dark:bg-primary-gray pl-5 pr-40 border border-gray-600 border-b-0'></div>
     </div>
   );
 }

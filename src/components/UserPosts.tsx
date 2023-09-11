@@ -21,10 +21,12 @@ export default function UserPosts({ user }: { user: UserDto }) {
   return (
     <div className='flex flex-col items-center w-full h-full'>
       {postsWithUser.map(post => (
-        <Post
+        <div
           key={post._id}
-          post={post}
-        />
+          className='w-full h-full border border-b-0 border-gray-600 last:border-b'
+        >
+          <Post post={post} />
+        </div>
       ))}
       {pager.isLoading ? (
         <div className='flex items-center gap-2 p-5'>
