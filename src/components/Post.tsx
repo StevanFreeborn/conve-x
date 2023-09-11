@@ -42,6 +42,7 @@ export default function Post({ post }: { post: PostWithUserDto }) {
         </div>
         <div></div>
       </div>
+      <div></div>
     </div>
   );
 }

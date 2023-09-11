@@ -2,6 +2,7 @@
 
 import { UserDto } from '@/app/types';
 import { usePaginatedQuery } from 'convex/react';
+import Link from 'next/link';
 import { api } from '../../convex/_generated/api';
 import Post from './Post';
 import SpinningLoader from './SpinningLoader';
@@ -17,6 +18,24 @@ export default function UserPosts({ user }: { user: UserDto }) {
   );
 
   const postsWithUser = pager.results.map(post => ({ ...post, user }));
+
+  if (postsWithUser.length == 0) {
+    return (
+      <div className='flex flex-col items-center justify-center border-t border-gray-600 w-full h-full'>
+        <div className='flex flex-col items-center gap-2'>
+          <h2 className='text-xl font-semibold'>
+            Hmm...it doesn&apos;t look like you&apos;ve posted anything.
+          </h2>
+          <Link
+            href='/posts/add'
+            className='inline-flex max-w-max items-center justify-center px-3 py-1 bg-primary-accent rounded-md text-white'
+          >
+            Make a post
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='flex flex-col items-center w-full h-full'>
