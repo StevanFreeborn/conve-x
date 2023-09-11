@@ -1,27 +1,21 @@
 import { Text } from '@codemirror/state';
-import { useQuery } from 'convex/react';
 import Image from 'next/image';
-import { api } from '../../convex/_generated/api';
-import { Doc } from '../../convex/_generated/dataModel';
+import { Doc, Id } from '../../convex/_generated/dataModel';
 import PostContent from './PostContent';
-import SpinningLoader from './SpinningLoader';
 
-export default function Post({ post }: { post: Doc<'posts'> }) {
-  const user = useQuery(api.users.getUserById, { id: post.userId });
-
-  if (user === undefined) {
-    return (
-      <div>
-        <SpinningLoader className='animate-spin w-5 h-5' />
-      </div>
-    );
-  }
-
-  if (user === 'USER_NOT_FOUND') {
-    return <div>User for post not found</div>;
-  }
-
-  const username = user.clerkUser.username ?? user._id;
+export default function Post({
+  post,
+}: {
+  post: Doc<'posts'> & {
+    user: {
+      _id: Id<'users'>;
+      _creationTime: number;
+      clerkUsername: string | null;
+      clerkImageUrl: string;
+    };
+  };
+}) {
+  const username = post.user.clerkUsername ?? post.user._id;
   const createdPostDate = new Date(post._creationTime);
   const postYear = createdPostDate.getFullYear();
   const postMonth = createdPostDate.toLocaleString(undefined, {
@@ -34,7 +28,7 @@ export default function Post({ post }: { post: Doc<'posts'> }) {
       <div>
         <Image
           alt='user profile image'
-          src={user.clerkUser.image_url}
+          src={post.user.clerkImageUrl}
           width={40}
           height={40}
           className='rounded-full object-cover border-4 border-primary-accent'

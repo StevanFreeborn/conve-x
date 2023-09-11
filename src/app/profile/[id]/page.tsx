@@ -13,7 +13,7 @@ export default async function UserProfilePage({
     clerkUserId: params.id,
   });
 
-  if (user === null) {
+  if (user === 'USER_NOT_FOUND') {
     // TODO: Show real not found component
     return <div>Not Found</div>;
   }

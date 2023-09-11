@@ -16,20 +16,18 @@ export async function userQuery(ctx: QueryCtx, clerkUserId: string) {
 export const getUserByClerkId = query({
   args: { clerkUserId: v.string() },
   async handler(ctx, args) {
-    return await userQuery(ctx, args.clerkUserId);
-  },
-});
-
-export const getUserById = query({
-  args: { id: v.id('users') },
-  async handler(ctx, args) {
-    const user = await ctx.db.get(args.id);
+    const user = await userQuery(ctx, args.clerkUserId);
 
     if (user === null) {
       return 'USER_NOT_FOUND';
     }
 
-    return user;
+    return {
+      _id: user._id,
+      _creationTime: user._creationTime,
+      clerkUsername: user.clerkUser.username,
+      clerkImageUrl: user.clerkUser.image_url,
+    };
   },
 });
 
