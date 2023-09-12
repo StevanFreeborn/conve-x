@@ -32,6 +32,7 @@ export default function Editor({ post }: { post?: Doc<'posts'> }) {
     EditorView.updateListener.of(vu => {
       setCurrentDoc(vu.state.doc.toJSON());
     }),
+    EditorView.lineWrapping,
   ];
 
   const [mode, setMode] = useState<'write' | 'preview'>('write');
