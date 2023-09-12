@@ -8,7 +8,7 @@ import Post from './Post';
 import SpinningLoader from './SpinningLoader';
 
 export default function UserPosts({ user }: { user: UserDto }) {
-  const PAGE_SIZE = 1;
+  const PAGE_SIZE = 2;
   const pager = usePaginatedQuery(
     api.posts.getUsersPostById,
     {
@@ -18,8 +18,6 @@ export default function UserPosts({ user }: { user: UserDto }) {
   );
 
   const postsWithUser = pager.results.map(post => ({ ...post, user }));
-
-  console.log(postsWithUser);
 
   if (pager.isLoading === false && postsWithUser.length == 0) {
     return (
@@ -57,9 +55,9 @@ export default function UserPosts({ user }: { user: UserDto }) {
           Loading...
         </div>
       ) : pager.status === 'CanLoadMore' ? (
-        <div className='flex items-center p-5'>
+        <div className='flex items-center p-5 pb-1'>
           <button
-            className='bg-primary-accent px-3 py-1 rounded-full'
+            className='bg-primary-accent text-white px-3 py-1 rounded-full'
             onClick={() => pager.loadMore(PAGE_SIZE)}
             disabled={pager.status !== 'CanLoadMore'}
           >

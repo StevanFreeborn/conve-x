@@ -90,7 +90,12 @@ export default function Post({ post }: { post: PostWithUserDto }) {
             >
               <ul>
                 <li>
-                  <Link href={`/posts/${post._id}/edit`}>Edit post</Link>
+                  <Link
+                    onClick={() => setModalOpen(false)}
+                    href={`/posts/${post._id}/edit`}
+                  >
+                    Edit post
+                  </Link>
                 </li>
                 <li className='text-red-600'>
                   <button

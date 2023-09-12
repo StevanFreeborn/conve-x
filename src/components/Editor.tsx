@@ -95,20 +95,16 @@ export default function Editor({ post }: { post?: Doc<'posts'> }) {
         </div>
         <div></div>
       </div>
-      <div className='flex flex-col p-4 h-0 flex-grow'>
+      <div className='flex flex-col p-4 h-0 flex-grow overflow-auto'>
         <div
           className={`${mode === 'write' ? '' : 'hidden'} flex-1 overflow-auto`}
           ref={editorRef}
         ></div>
-        <div
-          className={`${
-            mode === 'preview' ? '' : 'hidden'
-          } flex-1 overflow-auto`}
-        >
+        <div className={`${mode === 'preview' ? '' : 'hidden'} flex-1`}>
           <PostContent content={Text.of(currentDoc).toString()} />
         </div>
       </div>
-      <div className='flex items-center justify-end p-4 pt-0 gap-4'>
+      <div className='flex items-center justify-end p-4 gap-4'>
         <button
           onClick={() => router.back()}
           type='button'

@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { ConvexProvider, NextThemesProvider } from '@/providers';
 import { ClerkProvider } from '@clerk/nextjs';
@@ -24,7 +25,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body
-        className={`w-full h-full flex flex-col bg-white text-primary-gray dark:bg-primary-gray dark:text-white ${inter.className}`}
+        className={`w-full h-full flex flex-col bg-white text-primary-gray dark:bg-primary-gray dark:text-white ${inter.className} overflow-auto`}
       >
         <ClerkProvider
           publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
@@ -36,7 +37,10 @@ export default function RootLayout({
                 showSpinner={false}
               />
               <Navbar />
-              <div className='p-4 w-full h-full flex flex-col'>{children}</div>
+              <div className='p-4 w-full h-full flex flex-col'>
+                {children}
+                <Footer />
+              </div>
             </NextThemesProvider>
           </ConvexProvider>
         </ClerkProvider>

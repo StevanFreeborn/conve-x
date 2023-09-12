@@ -34,7 +34,6 @@ const basicDarkTheme = EditorView.theme(
       color: base01,
       backgroundColor: background,
       borderRadius: '0.375rem',
-      padding: '0.5rem 0',
     },
     '.cm-gutter': {
       height: '100%',
