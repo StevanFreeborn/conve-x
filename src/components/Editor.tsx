@@ -10,22 +10,20 @@ import { Compartment, EditorState, Text } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import { basicSetup } from 'codemirror';
 import { useMutation } from 'convex/react';
-import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { api } from '../../convex/_generated/api';
+import { Doc } from '../../convex/_generated/dataModel';
 import PostContent from './PostContent';
 
-export default function Editor() {
+export default function Editor({ post }: { post?: Doc<'posts'> }) {
   const { user, isSignedIn } = useUser();
-  const { theme } = useTheme();
   const editorTheme = new Compartment();
-  const [currentDoc, setCurrentDoc] = useState(['']);
-  const createPost = useMutation(api.posts.createPost);
+  const [currentDoc, setCurrentDoc] = useState(post?.content ?? ['']);
+  const createOrUpdatePost = useMutation(api.posts.createOrUpdatePost);
   const router = useRouter();
-  const [creating, setCreating] = useState(false);
+  const [creatingOrUpdating, setCreatingOrUpdating] = useState(false);
 
-  const doc = [''];
   const extensions = [
     basicSetup,
     markdown({ base: markdownLanguage, codeLanguages: languages }),
@@ -38,20 +36,7 @@ export default function Editor() {
   ];
 
   const [mode, setMode] = useState<'write' | 'preview'>('write');
-  const { editorRef, editorView } = useCodeMirror({ doc, extensions });
-
-  useEffect(() => {
-    if (editorView === null) {
-      return;
-    }
-
-    if (theme === 'dark') {
-      editorView.dispatch({
-        effects: editorTheme.reconfigure([]),
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [theme, editorView]);
+  const { editorRef } = useCodeMirror({ doc: currentDoc, extensions });
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -61,9 +46,10 @@ export default function Editor() {
         return;
       }
 
-      setCreating(true);
+      setCreatingOrUpdating(true);
 
-      const result = await createPost({
+      const result = await createOrUpdatePost({
+        id: post?._id,
         clerkUserId: user.id,
         content: currentDoc,
       });
@@ -80,7 +66,7 @@ export default function Editor() {
     } catch (error) {
       console.log(error);
     } finally {
-      setCreating(false);
+      setCreatingOrUpdating(false);
     }
   }
 
@@ -123,10 +109,20 @@ export default function Editor() {
           <PostContent content={Text.of(currentDoc).toString()} />
         </div>
       </div>
-      <div className='flex items-center justify-end p-4 pt-0'>
+      <div className='flex items-center justify-end p-4 pt-0 gap-4'>
+        <button
+          onClick={() => router.back()}
+          type='button'
+        >
+          Cancel
+        </button>
         <button
           type='submit'
-          disabled={!currentDoc.join() || !currentDoc.join().trim() || creating}
+          disabled={
+            !currentDoc.join() ||
+            !currentDoc.join().trim() ||
+            creatingOrUpdating
+          }
           className='py-1 px-4 bg-primary-accent text-white rounded-md disabled:opacity-50 flex items-center justify-center gap-2'
         >
           Post

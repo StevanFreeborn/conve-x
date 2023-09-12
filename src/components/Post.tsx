@@ -1,13 +1,18 @@
+'use client';
+
 import { PostWithUserDto } from '@/app/types';
 import { Text } from '@codemirror/state';
+import { useMutation } from 'convex/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { GoDotFill } from 'react-icons/go';
+import { api } from '../../convex/_generated/api';
 import PostContent from './PostContent';
 
 export default function Post({ post }: { post: PostWithUserDto }) {
+  const deletePostById = useMutation(api.posts.deletePostById);
   const modalRef = useRef<HTMLDivElement>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const username = post.user.clerkUsername ?? post.user._id;
@@ -42,8 +47,15 @@ export default function Post({ post }: { post: PostWithUserDto }) {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [modalOpen]);
 
-  function handleDeleteClick() {
-    throw new Error('Function not implemented.');
+  async function handleDeleteClick() {
+    setModalOpen(false);
+    const result = confirm('Are you sure you want to delete this post?');
+
+    if (result === false) {
+      return;
+    }
+
+    await deletePostById({ id: post._id });
   }
 
   return (

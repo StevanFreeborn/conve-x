@@ -411,6 +411,14 @@
   padding-left: 2em;
 }
 
+.markdown-content ul {
+  list-style: disc;
+}
+
+.markdown-content ol {
+  list-style: decimal
+}
+
 .markdown-content ol ol,
 .markdown-content ul ol {
   list-style-type: lower-roman;
