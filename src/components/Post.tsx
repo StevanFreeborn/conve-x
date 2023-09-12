@@ -104,8 +104,20 @@ export default function Post({ post }: { post: PostWithUserDto }) {
             </div>
           </div>
         </div>
+        <div className='max-h-80 overflow-hidden text-ellipsis'>
+          <PostContent
+            content={Text.of(post.content.slice(0, 10)).toString()}
+          />
+        </div>
         <div>
-          <PostContent content={Text.of(post.content).toString()} />
+          {post.content.length > 10 ? (
+            <Link
+              className='font-semibold text-primary-accent'
+              href={`/posts/${post._id}`}
+            >
+              Show more
+            </Link>
+          ) : null}
         </div>
         <div></div>
       </div>
