@@ -1,4 +1,14 @@
 {
   "css.lint.unknownAtRules": "ignore",
-  "cSpell.words": ["conve", "nextjs", "signup", "svix"]
+  "cSpell.words": [
+    "codemirror",
+    "conve",
+    "Keymap",
+    "lezer",
+    "nextjs",
+    "rehype",
+    "signup",
+    "svix",
+    "tailwindcss"
+  ]
 }

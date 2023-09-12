@@ -12,6 +12,7 @@ export default function AccountPage() {
             navbar: 'dark:bg-secondary-gray [&_*]:dark:text-white',
             formFieldInput: 'dark:bg-primary-gray dark:text-white',
             profileSectionTitle: 'dark:border-white dark:border-opacity-10',
+            breadcrumbsItem: 'dark:text-white',
           },
         }}
       />

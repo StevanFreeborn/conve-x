@@ -28,7 +28,7 @@ async function validateRequest(
   try {
     evt = wh.verify(payloadString, svixHeaders) as Event;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return;
   }
 
@@ -67,7 +67,7 @@ const handleClerkWebhook = httpAction(async (ctx, request) => {
       break;
     }
     default: {
-      console.log('ignored Clerk webhook event', event.type);
+      console.warn('ignored Clerk webhook event', event.type);
     }
   }
   return new Response(null, {

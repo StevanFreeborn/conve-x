@@ -1,7 +1,54 @@
-import { UserJSON } from '@clerk/nextjs/dist/types/server';
 import { v } from 'convex/values';
-import { Doc } from './_generated/dataModel';
-import { QueryCtx, internalMutation, internalQuery } from './_generated/server';
+import { UserDto } from './../src/app/types/index';
+import {
+  QueryCtx,
+  internalMutation,
+  internalQuery,
+  query,
+} from './_generated/server';
+
+export async function userQuery(ctx: QueryCtx, clerkUserId: string) {
+  return await ctx.db
+    .query('users')
+    .withIndex('by_clerk_id', q => q.eq('clerkUser.id', clerkUserId))
+    .unique();
+}
+
+export const getUserByClerkId = query({
+  args: { clerkUserId: v.string() },
+  async handler(ctx, args): Promise<UserDto | 'USER_NOT_FOUND'> {
+    const user = await userQuery(ctx, args.clerkUserId);
+
+    if (user === null) {
+      return 'USER_NOT_FOUND';
+    }
+
+    return {
+      _id: user._id,
+      _creationTime: user._creationTime,
+      clerkUsername: user.clerkUser.username,
+      clerkImageUrl: user.clerkUser.image_url,
+    };
+  },
+});
+
+export const getUserById = query({
+  args: { id: v.id('users') },
+  async handler(ctx, args): Promise<UserDto | 'USER_NOT_FOUND'> {
+    const user = await ctx.db.get(args.id);
+
+    if (user === null) {
+      return 'USER_NOT_FOUND';
+    }
+
+    return {
+      _id: user._id,
+      _creationTime: user._creationTime,
+      clerkUsername: user.clerkUser.username,
+      clerkImageUrl: user.clerkUser.image_url,
+    };
+  },
+});
 
 export const getUser = internalQuery({
   args: { subject: v.string() },
@@ -10,19 +57,9 @@ export const getUser = internalQuery({
   },
 });
 
-export async function userQuery(
-  ctx: QueryCtx,
-  clerkUserId: string
-): Promise<(Omit<Doc<'users'>, 'clerkUser'> & { clerkUser: UserJSON }) | null> {
-  return await ctx.db
-    .query('users')
-    .withIndex('by_clerk_id', q => q.eq('clerkUser.id', clerkUserId))
-    .unique();
-}
-
 export const updateOrCreateUser = internalMutation({
   args: { clerkUser: v.any() },
-  async handler(ctx, { clerkUser }: { clerkUser: UserJSON }) {
+  async handler(ctx, { clerkUser }) {
     const userRecord = await userQuery(ctx, clerkUser.id);
 
     if (userRecord === null) {
@@ -43,6 +80,19 @@ export const deleteUser = internalMutation({
       console.warn("can't delete user, does not exist", id);
       return;
     }
+
+    const userPosts = await ctx.db
+      .query('posts')
+      .withIndex('by_user_id', q => q.eq('userId', userRecord._id))
+      .collect();
+
+    const userPostDeletePromises = [];
+
+    for (const post of userPosts) {
+      userPostDeletePromises.push(ctx.db.delete(post._id));
+    }
+
+    await Promise.all(userPostDeletePromises);
 
     await ctx.db.delete(userRecord._id);
   },
