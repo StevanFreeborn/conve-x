@@ -13,7 +13,7 @@ export default async function EditPostPage({
     id: params.id as Id<'posts'>,
   });
 
-  if (post === 'POST_NOT_FOUND') {
+  if (post === 'POST_NOT_FOUND' || post === 'USER_FOR_POST_NOT_FOUND') {
     // TODO: Return actual not found component
     return <h1>Not Found</h1>;
   }

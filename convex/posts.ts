@@ -1,5 +1,6 @@
 import { paginationOptsValidator } from 'convex/server';
 import { v } from 'convex/values';
+import { PostWithUserDto } from '../src/app/types';
 import { mutation, query } from './_generated/server';
 import { userQuery } from './users';
 
@@ -59,13 +60,32 @@ export const deletePostById = mutation({
 
 export const getPostById = query({
   args: { id: v.id('posts') },
-  handler: async (ctx, args) => {
+  handler: async (
+    ctx,
+    args
+  ): Promise<
+    PostWithUserDto | 'POST_NOT_FOUND' | 'USER_FOR_POST_NOT_FOUND'
+  > => {
     const post = await ctx.db.get(args.id);
 
     if (post === null) {
       return 'POST_NOT_FOUND';
     }
 
-    return post;
+    const user = await ctx.db.get(post.userId);
+
+    if (user === null) {
+      return 'USER_FOR_POST_NOT_FOUND';
+    }
+
+    return {
+      ...post,
+      user: {
+        _id: user._id,
+        _creationTime: user._creationTime,
+        clerkUsername: user.clerkUser.username,
+        clerkImageUrl: user.clerkUser.image_url,
+      },
+    };
   },
 });

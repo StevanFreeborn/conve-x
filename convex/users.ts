@@ -32,6 +32,24 @@ export const getUserByClerkId = query({
   },
 });
 
+export const getUserById = query({
+  args: { id: v.id('users') },
+  async handler(ctx, args): Promise<UserDto | 'USER_NOT_FOUND'> {
+    const user = await ctx.db.get(args.id);
+
+    if (user === null) {
+      return 'USER_NOT_FOUND';
+    }
+
+    return {
+      _id: user._id,
+      _creationTime: user._creationTime,
+      clerkUsername: user.clerkUser.username,
+      clerkImageUrl: user.clerkUser.image_url,
+    };
+  },
+});
+
 export const getUser = internalQuery({
   args: { subject: v.string() },
   async handler(ctx, args) {

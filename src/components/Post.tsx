@@ -11,7 +11,13 @@ import { GoDotFill } from 'react-icons/go';
 import { api } from '../../convex/_generated/api';
 import PostContent from './PostContent';
 
-export default function Post({ post }: { post: PostWithUserDto }) {
+export default function Post({
+  post,
+  limit = true,
+}: {
+  post: PostWithUserDto;
+  limit?: boolean;
+}) {
   const deletePostById = useMutation(api.posts.deletePostById);
   const modalRef = useRef<HTMLDivElement>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -22,6 +28,7 @@ export default function Post({ post }: { post: PostWithUserDto }) {
     month: 'short',
   });
   const dayOfMonth = createdPostDate.getDate();
+  const content = limit ? post.content.slice(0, 10) : post.content;
 
   // TODO: Add reply and like buttons
 
@@ -102,13 +109,13 @@ export default function Post({ post }: { post: PostWithUserDto }) {
             </div>
           </div>
         </div>
-        <div className='max-h-80 overflow-hidden text-ellipsis'>
-          <PostContent
-            content={Text.of(post.content.slice(0, 10)).toString()}
-          />
+        <div
+          className={`${limit ? 'max-h-80' : ''} overflow-hidden text-ellipsis`}
+        >
+          <PostContent content={Text.of(content).toString()} />
         </div>
         <div>
-          {post.content.length > 10 ? (
+          {limit && post.content.length > 10 ? (
             <Link
               className='font-semibold text-primary-accent'
               href={`/posts/${post._id}`}
