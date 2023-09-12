@@ -36,7 +36,10 @@ export default function Editor({ post }: { post?: Doc<'posts'> }) {
   ];
 
   const [mode, setMode] = useState<'write' | 'preview'>('write');
-  const { editorRef } = useCodeMirror({ doc: currentDoc, extensions });
+  const { editorRef } = useCodeMirror({
+    doc: currentDoc,
+    extensions,
+  });
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();

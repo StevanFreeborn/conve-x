@@ -6,7 +6,8 @@ import { useMutation } from 'convex/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import { BiDotsHorizontalRounded, BiSolidLike } from 'react-icons/bi';
+import { BsFillReplyFill } from 'react-icons/bs';
 import { GoDotFill } from 'react-icons/go';
 import { api } from '../../convex/_generated/api';
 import PostContent from './PostContent';
@@ -14,9 +15,11 @@ import PostContent from './PostContent';
 export default function Post({
   post,
   limit = true,
+  showReply = true,
 }: {
   post: PostWithUserDto;
   limit?: boolean;
+  showReply?: boolean;
 }) {
   const deletePostById = useMutation(api.posts.deletePostById);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -29,6 +32,7 @@ export default function Post({
   });
   const dayOfMonth = createdPostDate.getDate();
   const content = limit ? post.content.slice(0, 10) : post.content;
+  const postLink = `/posts/${post._id}`;
 
   // TODO: Add reply and like buttons
 
@@ -92,7 +96,7 @@ export default function Post({
                 <li>
                   <Link
                     onClick={() => setModalOpen(false)}
-                    href={`/posts/${post._id}/edit`}
+                    href={`${postLink}/edit`}
                   >
                     Edit post
                   </Link>
@@ -118,13 +122,22 @@ export default function Post({
           {limit && post.content.length > 10 ? (
             <Link
               className='font-semibold text-primary-accent'
-              href={`/posts/${post._id}`}
+              href={postLink}
             >
               Show more
             </Link>
           ) : null}
         </div>
-        <div></div>
+        <div className='flex items-center gap-4'>
+          {showReply ? (
+            <Link href={{ pathname: postLink, query: { reply: true } }}>
+              <BsFillReplyFill />
+            </Link>
+          ) : null}
+          <button>
+            <BiSolidLike />
+          </button>
+        </div>
       </div>
     </div>
   );
