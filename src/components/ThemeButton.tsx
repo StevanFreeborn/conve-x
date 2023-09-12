@@ -1,12 +1,11 @@
 'use client';
 
-import { useMountedEffect } from '@/hooks';
+import { useMountedEffect, useProgressEffect } from '@/hooks';
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
 import { BsMoonStarsFill, BsSunFill } from 'react-icons/bs';
-import { ImSpinner2 } from 'react-icons/im';
 
 export default function ThemeButton() {
+  useProgressEffect();
   const { mounted, Loader } = useMountedEffect();
   const { theme, setTheme } = useTheme();
 

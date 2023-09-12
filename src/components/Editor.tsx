@@ -1,6 +1,6 @@
 'use client';
 
-import { useCodeMirror } from '@/hooks';
+import { useCodeMirror, useRouter } from '@/hooks';
 import { basicDark } from '@/lib/codemirror';
 import { useUser } from '@clerk/nextjs';
 import { indentWithTab } from '@codemirror/commands';
@@ -10,7 +10,6 @@ import { Compartment, EditorState, Text } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import { basicSetup } from 'codemirror';
 import { useMutation } from 'convex/react';
-import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 import { api } from '../../convex/_generated/api';
 import { Doc } from '../../convex/_generated/dataModel';

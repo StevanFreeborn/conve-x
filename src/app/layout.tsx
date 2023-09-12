@@ -3,6 +3,7 @@ import { ConvexProvider, NextThemesProvider } from '@/providers';
 import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import NextTopLoader from 'nextjs-toploader';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -30,6 +31,10 @@ export default function RootLayout({
         >
           <ConvexProvider>
             <NextThemesProvider>
+              <NextTopLoader
+                color='#3743e5'
+                showSpinner={false}
+              />
               <Navbar />
               <div className='p-4 w-full h-full flex flex-col'>{children}</div>
             </NextThemesProvider>

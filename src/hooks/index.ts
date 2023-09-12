@@ -1,6 +1,12 @@
 import SpinningLoader from '@/components/SpinningLoader';
 import { EditorState, Extension, Text } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
+import {
+  useRouter as useNextRouter,
+  usePathname,
+  useSearchParams,
+} from 'next/navigation';
+import NProgress from 'nprogress';
 import { useEffect, useRef, useState } from 'react';
 
 export function useCodeMirror({
@@ -42,4 +48,30 @@ export function useMountedEffect() {
   useEffect(() => setMounted(true), []);
 
   return { mounted, Loader: SpinningLoader };
+}
+
+export function useRouter() {
+  const router = useNextRouter();
+  const { push, back } = router;
+
+  router.push = (href, options) => {
+    NProgress.start();
+    push(href, options);
+  };
+
+  router.back = () => {
+    NProgress.start();
+    back();
+  };
+
+  return router;
+}
+
+export function useProgressEffect() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    NProgress.done();
+  }, [pathname, searchParams]);
 }
