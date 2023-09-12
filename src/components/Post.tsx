@@ -23,13 +23,6 @@ export default function Post({ post }: { post: PostWithUserDto }) {
   });
   const dayOfMonth = createdPostDate.getDate();
 
-  // TODO: Posts content should only be allowed to grow to a set height
-  // after which the post's content should be truncated
-  // and we should display a 'more' link to load the post
-  // in an individual page
-
-  // TODO: Add menu button
-
   // TODO: Add reply and like buttons
 
   useEffect(() => {
