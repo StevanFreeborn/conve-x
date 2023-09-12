@@ -1,6 +1,7 @@
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import remarkEmoji from 'remark-emoji';
 import remarkGfm from 'remark-gfm';
 import './MarkdownContent.css';
 
@@ -8,7 +9,7 @@ export default function PostContent({ content }: { content: string }) {
   return (
     <div className='markdown-content'>
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, remarkEmoji]}
         components={{
           code({ node, inline, className, children, ...props }) {
             const match = /language-(\w+)/.exec(className || '');
