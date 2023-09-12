@@ -96,7 +96,7 @@ export default function Editor({ post }: { post?: Doc<'posts'> }) {
         </div>
         <div></div>
       </div>
-      <div className='flex flex-col p-4 h-0 flex-grow overflow-auto'>
+      <div className='flex flex-col pt-4 px-4 h-0 flex-grow overflow-auto'>
         <div
           className={`${mode === 'write' ? '' : 'hidden'} flex-1 overflow-auto`}
           ref={editorRef}
