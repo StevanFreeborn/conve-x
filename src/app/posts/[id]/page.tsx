@@ -79,7 +79,7 @@ export default function PostPage({
                   className='rounded-full object-cover border-4 border-primary-accent'
                 />
               </div>
-
+              {/* TODO: Display replies as paged query. Should show latest replies with option to load more */}
               <div className='flex w-full'>
                 <Editor
                   clerkUserId={user.user.id}
