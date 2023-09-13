@@ -46,6 +46,7 @@ export const getUsersPostById = query({
     return await ctx.db
       .query('posts')
       .withIndex('by_user_id', q => q.eq('userId', args.userId))
+      .filter(q => q.eq(q.field('parentPostId'), undefined))
       .order('desc')
       .paginate(args.paginationOpts);
   },

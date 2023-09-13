@@ -2,30 +2,41 @@
 
 import { useCodeMirror, useRouter } from '@/hooks';
 import { basicDark } from '@/lib/codemirror';
-import { useUser } from '@clerk/nextjs';
 import { indentWithTab } from '@codemirror/commands';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
 import { Compartment, EditorState, Text } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import { basicSetup } from 'codemirror';
-import { useMutation } from 'convex/react';
 import { FormEvent, useState } from 'react';
-import { api } from '../../convex/_generated/api';
 import { Doc, Id } from '../../convex/_generated/dataModel';
 import PostContent from './PostContent';
 
-export default function Editor({
-  parentPostId,
-  post,
-}: {
+export type SubmitActionParams = {
+  clerkUserId: string;
   parentPostId?: Id<'posts'>;
   post?: Doc<'posts'>;
+  currentDoc: string[];
+};
+
+export default function Editor({
+  clerkUserId,
+  parentPostId,
+  post,
+  submitAction,
+}: {
+  clerkUserId: string;
+  parentPostId?: Id<'posts'>;
+  post?: Doc<'posts'>;
+  submitAction: ({
+    clerkUserId,
+    parentPostId,
+    post,
+    currentDoc,
+  }: SubmitActionParams) => Promise<void>;
 }) {
-  const { user, isSignedIn } = useUser();
   const editorTheme = new Compartment();
   const [currentDoc, setCurrentDoc] = useState(post?.content ?? ['']);
-  const createOrUpdatePost = useMutation(api.posts.createOrUpdatePost);
   const router = useRouter();
   const [creatingOrUpdating, setCreatingOrUpdating] = useState(false);
 
@@ -42,48 +53,38 @@ export default function Editor({
   ];
 
   const [mode, setMode] = useState<'write' | 'preview'>('write');
-  const { editorRef } = useCodeMirror({
+  const { editorRef, editorView } = useCodeMirror({
     doc: currentDoc,
     extensions,
   });
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
     try {
-      if (isSignedIn !== true) {
-        router.push('/login');
-        return;
-      }
-
       setCreatingOrUpdating(true);
-
-      const result = await createOrUpdatePost({
-        parentPostId: parentPostId,
-        id: post?._id,
-        clerkUserId: user.id,
-        content: currentDoc,
+      await submitAction({
+        clerkUserId,
+        parentPostId,
+        post,
+        currentDoc,
       });
-
-      switch (result) {
-        case 'USER_NOT_FOUND':
-        case 'USER_NOT_AUTHORIZED':
-        case 'CANNOT_POST_ON_BEHALF_OF_ANOTHER_USER':
-          throw Error('Unable to create post');
-        default:
-          router.push('/');
-          return;
-      }
     } catch (error) {
       console.log(error);
     } finally {
+      console.log('here');
       setCreatingOrUpdating(false);
+      setCurrentDoc(['']);
+      editorView?.dispatch({
+        changes: { from: 0, to: editorView.state.doc.length, insert: '' },
+      });
     }
   }
 
   return (
     <form
       onSubmit={handleSubmit}
-      className='flex flex-col flex-1 shadow-md rounded-md dark:bg-secondary-gray border border-gray-600'
+      className='flex flex-col flex-1 w-full shadow-md rounded-md dark:bg-secondary-gray border border-gray-600'
     >
       <div className='flex items-center justify-between rounded-t-md p-4 pb-0 border-b border-gray-600 dark:bg-primary-gray'>
         <div className='flex items-center'>
