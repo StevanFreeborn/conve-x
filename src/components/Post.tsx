@@ -63,8 +63,8 @@ export default function Post({
   }
 
   return (
-    <div className='flex w-full gap-4 p-8 bg-white dark:bg-secondary-gray'>
-      <div>
+    <div className='flex w-full gap-4 p-8 bg-white dark:bg-secondary-gray flex-wrap'>
+      <div className='flex-shrink-0'>
         <Image
           alt='user profile image'
           src={post.user.clerkImageUrl}
@@ -73,13 +73,20 @@ export default function Post({
           className='rounded-full object-cover border-4 border-primary-accent'
         />
       </div>
-      <div className='flex flex-1 flex-col gap-2'>
+      <div className='flex flex-1 flex-col gap-2 min-w-0'>
         <div className='flex items-center justify-between gap-2'>
-          <div className='flex items-center gap-2'>
-            <div>{username}</div>
-            <GoDotFill className='w-3 h-3' />
-            <div className='text-xs'>
-              {`${postMonth} ${dayOfMonth}, ${postYear}`}
+          <div className='flex items-center gap-2 flex-wrap min-w-0'>
+            <div
+              className='overflow-hidden text-ellipsis'
+              title={username}
+            >
+              {username}
+            </div>
+            <div className='flex items-center gap-2'>
+              <GoDotFill className='w-3 h-3' />
+              <div className='text-xs'>
+                {`${postMonth} ${dayOfMonth}, ${postYear}`}
+              </div>
             </div>
           </div>
           <div className='relative'>
@@ -114,7 +121,7 @@ export default function Post({
           </div>
         </div>
         <div
-          className={`${limit ? 'max-h-80' : ''} overflow-hidden text-ellipsis`}
+          className={`${limit ? 'max-h-80' : ''} flex flex-col overflow-hidden`}
         >
           <PostContent content={Text.of(content).toString()} />
         </div>

@@ -28,14 +28,14 @@ export default function PostPage({
 
   return (
     <main className='flex flex-col flex-1 w-full items-center'>
-      <div className='flex flex-col items-center w-full max-w-4xl gap-4'>
+      <div className='flex flex-col w-full max-w-4xl gap-4'>
         {post === undefined ? (
           <div className='flex items-center gap-2'>
             <SpinningLoader className='animate-spin w-5 h-5' /> Loading post...
           </div>
         ) : (
           <>
-            <div className='p-1 rounded-md border border-gray-600'>
+            <div className='flex flex-col min-w-0 p-1 rounded-md border border-gray-600'>
               <Post
                 post={post}
                 limit={false}
@@ -54,7 +54,9 @@ export default function PostPage({
                   />
                 </div>
               )}
-              <Editor />
+              <div className='flex w-full'>
+                <Editor parentPostId={post._id} />
+              </div>
             </div>
           </>
         )}

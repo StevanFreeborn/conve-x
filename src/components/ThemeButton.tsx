@@ -17,11 +17,11 @@ export default function ThemeButton() {
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
     >
       {mounted === false ? (
-        <Loader className='animate-spin w-5 h-5' />
+        <Loader className='animate-spin w-6 h-6' />
       ) : isDark ? (
-        <BsMoonStarsFill className='w-5 h-5' />
+        <BsMoonStarsFill className='w-6 h-6' />
       ) : (
-        <BsSunFill className='w-5 h-5' />
+        <BsSunFill className='w-6 h-6' />
       )}
     </button>
   );

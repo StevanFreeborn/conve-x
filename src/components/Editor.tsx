@@ -12,10 +12,16 @@ import { basicSetup } from 'codemirror';
 import { useMutation } from 'convex/react';
 import { FormEvent, useState } from 'react';
 import { api } from '../../convex/_generated/api';
-import { Doc } from '../../convex/_generated/dataModel';
+import { Doc, Id } from '../../convex/_generated/dataModel';
 import PostContent from './PostContent';
 
-export default function Editor({ post }: { post?: Doc<'posts'> }) {
+export default function Editor({
+  parentPostId,
+  post,
+}: {
+  parentPostId?: Id<'posts'>;
+  post?: Doc<'posts'>;
+}) {
   const { user, isSignedIn } = useUser();
   const editorTheme = new Compartment();
   const [currentDoc, setCurrentDoc] = useState(post?.content ?? ['']);
@@ -52,6 +58,7 @@ export default function Editor({ post }: { post?: Doc<'posts'> }) {
       setCreatingOrUpdating(true);
 
       const result = await createOrUpdatePost({
+        parentPostId: parentPostId,
         id: post?._id,
         clerkUserId: user.id,
         content: currentDoc,
