@@ -11,7 +11,7 @@ export default function Loader({
 }) {
   if (isLoading) {
     return (
-      <div className='flex w-full items-center justify-center gap-2 p-5 border-t border-gray-600'>
+      <div className='flex w-full items-center justify-center gap-2 p-5 border-t border-gray-600 text-sm'>
         <SpinningLoader className='animate-spin w-5 h-5' />
         Loading...
       </div>
@@ -25,7 +25,7 @@ export default function Loader({
   return (
     <div className='flex items-center'>
       <button
-        className='bg-primary-accent text-white px-3 py-1 rounded-full'
+        className='bg-primary-accent text-white px-3 py-1 rounded-full text-sm'
         onClick={loadButtonClickHandler}
         disabled={status !== 'CanLoadMore'}
       >

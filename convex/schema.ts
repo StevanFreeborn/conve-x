@@ -53,7 +53,8 @@ export default defineSchema(
       follower: v.id('users'), // person following
     })
       .index('by_following', ['following'])
-      .index('by_follower', ['follower']),
+      .index('by_follower', ['follower'])
+      .index('by_following_follower_id', ['following', 'follower']),
   },
   { schemaValidation: false }
 );

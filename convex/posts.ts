@@ -147,3 +147,15 @@ export const getPostReplyCount = query({
     return replies.length;
   },
 });
+
+export const getUserPostCount = query({
+  args: { userId: v.id('users') },
+  handler: async (ctx, args) => {
+    const posts = await ctx.db
+      .query('posts')
+      .withIndex('by_user_id', q => q.eq('userId', args.userId))
+      .collect();
+
+    return posts.length;
+  },
+});
