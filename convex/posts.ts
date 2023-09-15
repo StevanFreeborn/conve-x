@@ -1,6 +1,7 @@
 import { paginationOptsValidator } from 'convex/server';
 import { v } from 'convex/values';
 import { PostWithUserDto } from '../src/app/types';
+import { Id } from './_generated/dataModel';
 import { mutation, query } from './_generated/server';
 import { userQuery } from './users';
 
@@ -86,7 +87,51 @@ export const getPostById = query({
         _creationTime: user._creationTime,
         clerkUsername: user.clerkUser.username,
         clerkImageUrl: user.clerkUser.image_url,
+        clerkUserId: user.clerkUser.id,
       },
     };
+  },
+});
+
+export const getRepliesByParentId = query({
+  args: { id: v.id('posts'), paginationOpts: paginationOptsValidator },
+  handler: async (ctx, args) => {
+    const replies = await ctx.db
+      .query('posts')
+      .withIndex('by_parent_id', q => q.eq('parentPostId', args.id))
+      .order('desc')
+      .paginate(args.paginationOpts);
+
+    const repliesWithUserData = await Promise.all(
+      replies.page.map(async reply => {
+        const user = await ctx.db.get(reply.userId);
+
+        if (user === null) {
+          return {
+            ...reply,
+            user: {
+              _id: '' as Id<'users'>,
+              _creationTime: 0,
+              clerkUsername: null,
+              clerkImageUrl: '',
+              clerkUserId: '',
+            },
+          };
+        }
+
+        return {
+          ...reply,
+          user: {
+            _id: user._id,
+            _creationTime: user._creationTime,
+            clerkUsername: user.clerkUser.username,
+            clerkImageUrl: user.clerkUser.image_url,
+            clerkUserId: user.clerkUser.id,
+          },
+        };
+      })
+    );
+
+    return { ...replies, page: repliesWithUserData };
   },
 });

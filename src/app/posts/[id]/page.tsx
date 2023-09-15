@@ -2,11 +2,13 @@
 
 import Editor, { SubmitActionParams } from '@/components/Editor';
 import Post from '@/components/Post';
+import PostReplies from '@/components/PostReplies';
 import SpinningLoader from '@/components/SpinningLoader';
 import { useRouter } from '@/hooks';
 import { useUser } from '@clerk/nextjs';
 import { useMutation, useQuery } from 'convex/react';
 import Image from 'next/image';
+import { useEffect, useRef } from 'react';
 import { api } from '../../../../convex/_generated/api';
 import { Id } from '../../../../convex/_generated/dataModel';
 
@@ -15,14 +17,22 @@ export default function PostPage({
   searchParams,
 }: {
   params: { id: string };
-  searchParams: { reply?: boolean };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  const replyRef = useRef<HTMLDivElement>(null);
   const user = useUser();
   const router = useRouter();
   const post = useQuery(api.posts.getPostById, {
     id: params.id as Id<'posts'>,
   });
   const createOrUpdatePost = useMutation(api.posts.createOrUpdatePost);
+  const isReply = searchParams.reply === 'true';
+
+  useEffect(() => {
+    if (replyRef.current !== null && isReply) {
+      replyRef.current.scrollIntoView();
+    }
+  }, [isReply, post]);
 
   async function submitAction({
     clerkUserId,
@@ -69,6 +79,9 @@ export default function PostPage({
                 showReply={false}
               />
             </div>
+            <div className='w-full'>
+              <PostReplies parentId={post._id} />
+            </div>
             <div className='flex w-full h-80 gap-4'>
               <div>
                 <Image
@@ -79,12 +92,15 @@ export default function PostPage({
                   className='rounded-full object-cover border-4 border-primary-accent'
                 />
               </div>
-              {/* TODO: Display replies as paged query. Should show latest replies with option to load more */}
-              <div className='flex w-full'>
+              <div
+                ref={replyRef}
+                className='flex w-full'
+              >
                 <Editor
                   clerkUserId={user.user.id}
                   parentPostId={post._id}
                   submitAction={submitAction}
+                  autofocus={isReply}
                 />
               </div>
             </div>

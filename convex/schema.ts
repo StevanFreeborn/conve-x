@@ -39,7 +39,9 @@ export default defineSchema(
       parentPostId: v.optional(v.id('posts')),
       userId: v.id('users'),
       content: v.array(v.string()),
-    }).index('by_user_id', ['userId']),
+    })
+      .index('by_user_id', ['userId'])
+      .index('by_parent_id', ['parentPostId']),
   },
   { schemaValidation: false }
 );

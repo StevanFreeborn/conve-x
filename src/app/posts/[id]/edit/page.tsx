@@ -45,8 +45,7 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
       case 'CANNOT_POST_ON_BEHALF_OF_ANOTHER_USER':
         throw Error('Unable to update post');
       default:
-        'use server';
-        router.push('/');
+        router.push(`/posts/${post?._id}`);
         return;
     }
   }

@@ -8,7 +8,7 @@ import { languages } from '@codemirror/language-data';
 import { Compartment, EditorState, Text } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import { basicSetup } from 'codemirror';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { Doc, Id } from '../../convex/_generated/dataModel';
 import PostContent from './PostContent';
 
@@ -24,6 +24,7 @@ export default function Editor({
   parentPostId,
   post,
   submitAction,
+  autofocus = true,
 }: {
   clerkUserId: string;
   parentPostId?: Id<'posts'>;
@@ -34,6 +35,7 @@ export default function Editor({
     post,
     currentDoc,
   }: SubmitActionParams) => Promise<void>;
+  autofocus?: boolean;
 }) {
   const editorTheme = new Compartment();
   const [currentDoc, setCurrentDoc] = useState(post?.content ?? ['']);
@@ -57,6 +59,12 @@ export default function Editor({
     doc: currentDoc,
     extensions,
   });
+
+  useEffect(() => {
+    if (editorView !== null && autofocus) {
+      editorView.focus();
+    }
+  }, [autofocus, editorView]);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
