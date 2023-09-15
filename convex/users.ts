@@ -93,12 +93,29 @@ export const deleteUser = internalMutation({
       .withIndex('by_user_post_id', q => q.eq('userId', userRecord._id))
       .collect();
 
+    const userFollowers = await ctx.db
+      .query('follows')
+      .withIndex('by_following', q => q.eq('following', userRecord._id))
+      .collect();
+    const userFollowings = await ctx.db
+      .query('follows')
+      .withIndex('by_follower', q => q.eq('follower', userRecord._id))
+      .collect();
+
     await Promise.all(
       userPosts.map(async post => await ctx.db.delete(post._id))
     );
 
     await Promise.all(
       userLikes.map(async like => await ctx.db.delete(like._id))
+    );
+
+    await Promise.all(
+      userFollowers.map(async follower => await ctx.db.delete(follower._id))
+    );
+
+    await Promise.all(
+      userFollowings.map(async following => await ctx.db.delete(following._id))
     );
 
     await ctx.db.delete(userRecord._id);
