@@ -27,7 +27,7 @@ export default function Reply({ post }: { post: PostWithUserDto }) {
       </div>
       <div className='flex flex-col flex-1 w-full border border-gray-600 rounded-md'>
         <div className='flex flex-col w-full p-1'>
-          <div className='flex justify-between bg-primary-gray p-2'>
+          <div className='flex justify-between dark:bg-primary-gray p-2'>
             <div className='text-sm'>
               {`${username} `}
               <span className='text-[#7a838f]'>{`replied on ${month} ${day}, ${year}`}</span>
@@ -37,7 +37,7 @@ export default function Reply({ post }: { post: PostWithUserDto }) {
             ) : null}
           </div>
           <div className='p-1'>
-            <div className='p-2 rounded-md bg-secondary-gray'>
+            <div className='p-2 rounded-md dark:bg-secondary-gray'>
               <PostContent content={Text.of(post.content).toString()} />
             </div>
           </div>

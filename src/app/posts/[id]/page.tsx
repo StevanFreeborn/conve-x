@@ -32,7 +32,7 @@ export default function PostPage({
     if (replyRef.current !== null && isReply) {
       replyRef.current.scrollIntoView();
     }
-  }, [isReply, post]);
+  }, [isReply, user]);
 
   async function submitAction({
     clerkUserId,
