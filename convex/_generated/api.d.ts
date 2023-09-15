@@ -14,6 +14,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as follows from "../follows";
 import type * as http from "../http";
 import type * as likes from "../likes";
 import type * as posts from "../posts";
@@ -28,6 +29,7 @@ import type * as users from "../users";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  follows: typeof follows;
   http: typeof http;
   likes: typeof likes;
   posts: typeof posts;

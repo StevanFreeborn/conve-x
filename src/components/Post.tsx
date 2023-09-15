@@ -46,13 +46,15 @@ export default function Post({
   return (
     <div className='flex w-full gap-4 p-8 bg-white dark:bg-secondary-gray flex-wrap'>
       <div className='flex-shrink-0'>
-        <Image
-          alt='user profile image'
-          src={post.user.clerkImageUrl}
-          width={40}
-          height={40}
-          className='rounded-full object-cover border-4 border-primary-accent'
-        />
+        <Link href={`/profile/${post.user.clerkUserId}`}>
+          <Image
+            alt='user profile image'
+            src={post.user.clerkImageUrl}
+            width={40}
+            height={40}
+            className='rounded-full object-cover border-4 border-primary-accent'
+          />
+        </Link>
       </div>
       <div className='flex flex-1 flex-col gap-2 min-w-0'>
         <div className='flex items-center justify-between gap-2'>

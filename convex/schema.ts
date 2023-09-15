@@ -48,6 +48,13 @@ export default defineSchema(
     })
       .index('by_user_post_id', ['userId', 'postId'])
       .index('by_post_user_id', ['postId', 'userId']),
+    follows: defineTable({
+      following: v.id('users'), // person being followed
+      follower: v.id('users'), // person following
+    })
+      .index('by_following', ['following'])
+      .index('by_follower', ['follower'])
+      .index('by_following_follower_id', ['following', 'follower']),
   },
   { schemaValidation: false }
 );

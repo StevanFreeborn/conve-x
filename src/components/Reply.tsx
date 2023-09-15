@@ -2,6 +2,7 @@ import { PostWithUserDto } from '@/app/types';
 import { useUser } from '@clerk/nextjs';
 import { Text } from '@codemirror/state';
 import Image from 'next/image';
+import Link from 'next/link';
 import PostActionButton from './PostActionButtons';
 import PostActionModal from './PostActionModal';
 import PostContent from './PostContent';
@@ -17,13 +18,15 @@ export default function Reply({ post }: { post: PostWithUserDto }) {
   return (
     <div className='flex w-full gap-4'>
       <div>
-        <Image
-          alt='user profile image'
-          src={post.user.clerkImageUrl}
-          width={40}
-          height={40}
-          className='rounded-full object-cover border-4 border-primary-accent'
-        />
+        <Link href={`/profile/${post.user.clerkUserId}`}>
+          <Image
+            alt='user profile image'
+            src={post.user.clerkImageUrl}
+            width={40}
+            height={40}
+            className='rounded-full object-cover border-4 border-primary-accent'
+          />
+        </Link>
       </div>
       <div className='flex flex-col flex-1 w-full border border-gray-600 rounded-md'>
         <div className='flex flex-col w-full p-1'>
