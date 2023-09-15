@@ -42,6 +42,12 @@ export default defineSchema(
     })
       .index('by_user_id', ['userId'])
       .index('by_parent_id', ['parentPostId']),
+    likes: defineTable({
+      postId: v.id('posts'),
+      userId: v.id('users'),
+    })
+      .index('by_user_post_id', ['userId', 'postId'])
+      .index('by_post_user_id', ['postId', 'userId']),
   },
   { schemaValidation: false }
 );

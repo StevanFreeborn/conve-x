@@ -9,6 +9,7 @@
     "rehype",
     "signup",
     "svix",
-    "tailwindcss"
+    "tailwindcss",
+    "totp"
   ]
 }

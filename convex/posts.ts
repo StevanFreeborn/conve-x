@@ -135,3 +135,15 @@ export const getRepliesByParentId = query({
     return { ...replies, page: repliesWithUserData };
   },
 });
+
+export const getPostReplyCount = query({
+  args: { postId: v.id('posts') },
+  handler: async (ctx, args) => {
+    const replies = await ctx.db
+      .query('posts')
+      .withIndex('by_parent_id', q => q.eq('parentPostId', args.postId))
+      .collect();
+
+    return replies.length;
+  },
+});
