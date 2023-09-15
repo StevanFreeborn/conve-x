@@ -3,6 +3,7 @@
 import { SignedIn, SignedOut, useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { AiFillHome } from 'react-icons/ai';
 import { BiLogIn, BiPlus } from 'react-icons/bi';
 import { BsPersonPlusFill } from 'react-icons/bs';
 import { ImProfile } from 'react-icons/im';
@@ -62,6 +63,19 @@ export default function Navbar() {
                   placeholder='Search'
                   className='w-full md:w-[unset] py-1 px-2 rounded-md border border-gray-600 dark:bg-primary-gray dark:border-0'
                 />
+              </div>
+            </li>
+            <li>
+              <div className='flex items-center gap-2'>
+                <div className='p-1 md:hidden'>
+                  <AiFillHome className='w-6 h-6' />
+                </div>
+                <Link
+                  onClick={() => setNavOpen(false)}
+                  href='/'
+                >
+                  Home
+                </Link>
               </div>
             </li>
             <li>

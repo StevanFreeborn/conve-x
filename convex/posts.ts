@@ -160,3 +160,46 @@ export const getUserPostCount = query({
     return posts.length;
   },
 });
+
+export const getAllPostsWithUser = query({
+  args: { paginationOpts: paginationOptsValidator },
+  handler: async (ctx, args) => {
+    const posts = await ctx.db
+      .query('posts')
+      .filter(q => q.eq(q.field('parentPostId'), undefined))
+      .order('desc')
+      .paginate(args.paginationOpts);
+
+    const postsWithUser = await Promise.all(
+      posts.page.map(async post => {
+        const user = await ctx.db.get(post.userId);
+
+        if (user === null) {
+          return {
+            ...post,
+            user: {
+              _id: '' as Id<'users'>,
+              _creationTime: 0,
+              clerkUsername: null,
+              clerkImageUrl: '',
+              clerkUserId: '',
+            },
+          };
+        }
+
+        return {
+          ...post,
+          user: {
+            _id: user._id,
+            _creationTime: user._creationTime,
+            clerkUsername: user.clerkUser.username,
+            clerkImageUrl: user.clerkUser.image_url,
+            clerkUserId: user.clerkUser.id,
+          },
+        };
+      })
+    );
+
+    return { ...posts, page: postsWithUser };
+  },
+});

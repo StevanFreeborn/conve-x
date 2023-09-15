@@ -8,7 +8,7 @@ import Loader from './Loader';
 import Post from './Post';
 
 export default function UserPosts({ user }: { user: UserDto }) {
-  const PAGE_SIZE = 1;
+  const PAGE_SIZE = 10;
   const pager = usePaginatedQuery(
     api.posts.getUsersPostById,
     {
