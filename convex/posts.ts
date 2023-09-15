@@ -154,6 +154,7 @@ export const getUserPostCount = query({
     const posts = await ctx.db
       .query('posts')
       .withIndex('by_user_id', q => q.eq('userId', args.userId))
+      .filter(q => q.eq(q.field('parentPostId'), undefined))
       .collect();
 
     return posts.length;
