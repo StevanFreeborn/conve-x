@@ -25,7 +25,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body
-        className={`w-full h-full flex flex-col bg-white text-primary-gray dark:bg-primary-gray dark:text-white ${inter.className} overflow-auto`}
+        className={`w-full h-full flex flex-col bg-white text-primary-gray dark:bg-primary-gray dark:text-white ${inter.className}`}
       >
         <ClerkProvider
           publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
@@ -37,7 +37,7 @@ export default function RootLayout({
                 showSpinner={false}
               />
               <Navbar />
-              <div className='p-4 w-full h-full flex flex-col'>
+              <div className='flex flex-col p-4 w-full h-full overflow-y-auto'>
                 {children}
                 <Footer />
               </div>

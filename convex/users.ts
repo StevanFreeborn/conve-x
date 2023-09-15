@@ -28,6 +28,7 @@ export const getUserByClerkId = query({
       _creationTime: user._creationTime,
       clerkUsername: user.clerkUser.username,
       clerkImageUrl: user.clerkUser.image_url,
+      clerkUserId: user.clerkUser.id,
     };
   },
 });
@@ -46,6 +47,7 @@ export const getUserById = query({
       _creationTime: user._creationTime,
       clerkUsername: user.clerkUser.username,
       clerkImageUrl: user.clerkUser.image_url,
+      clerkUserId: user.clerkUser.id,
     };
   },
 });

@@ -5,6 +5,7 @@ export type UserDto = {
   _creationTime: number;
   clerkUsername: string | null;
   clerkImageUrl: string;
+  clerkUserId: string;
 };
 
 export type PostWithUserDto = Doc<'posts'> & { user: UserDto };
