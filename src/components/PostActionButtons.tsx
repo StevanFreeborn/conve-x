@@ -36,7 +36,7 @@ export default function PostActionButton({
           href={{ pathname: `/posts/${postId}`, query: { reply: true } }}
         >
           <BsFillReplyFill />
-          <div className='flex items-center justify-center h-6 w-6 rounded-full text-xs bg-secondary-gray text-white'>
+          <div className='flex items-center justify-center h-6 w-6 rounded-full text-xs bg-primary-gray text-white'>
             {replyCount}
           </div>
         </Link>
@@ -50,7 +50,7 @@ export default function PostActionButton({
           }`}
         >
           <BiSolidLike />{' '}
-          <div className='flex items-center justify-center h-6 w-6 rounded-full text-xs bg-secondary-gray text-white'>
+          <div className='flex items-center justify-center h-6 w-6 rounded-full text-xs bg-primary-gray text-white'>
             {likeCount}
           </div>
         </button>
