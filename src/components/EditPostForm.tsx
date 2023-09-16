@@ -1,5 +1,6 @@
 'use client';
 
+import NotFound from '@/app/not-found';
 import { useRouter } from '@/hooks';
 import { useUser } from '@clerk/nextjs';
 import { useMutation, useQuery } from 'convex/react';
@@ -22,8 +23,7 @@ export default function EditPostForm({ postId }: { postId: string }) {
   }
 
   if (post === 'POST_NOT_FOUND' || post === 'USER_FOR_POST_NOT_FOUND') {
-    // TODO: Return actual not found component
-    return <h1>Not Found</h1>;
+    return <NotFound />;
   }
 
   async function submitAction({

@@ -11,6 +11,8 @@ export default function GlobalError({
   error: Error;
   reset: () => void;
 }) {
+  console.log(error);
+
   return (
     <html lang="en" className="w-full h-full">
       <body

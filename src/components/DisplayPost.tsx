@@ -1,9 +1,10 @@
 'use client';
 
+import NotFound from '@/app/not-found';
+import { useRouter } from '@/hooks';
 import { useUser } from '@clerk/nextjs';
 import { useMutation, useQuery } from 'convex/react';
 import Image from 'next/image';
-import { useRouter } from '@/hooks';
 import { useEffect, useRef } from 'react';
 import { api } from '../../convex/_generated/api';
 import { Id } from '../../convex/_generated/dataModel';
@@ -62,8 +63,7 @@ export default function DisplayPost({
   }
 
   if (post === 'POST_NOT_FOUND' || post === 'USER_FOR_POST_NOT_FOUND') {
-    // TODO: Return actual not found component
-    return <h1>Not Found</h1>;
+    return <NotFound />;
   }
 
   if (post !== undefined && user.isLoaded) {
