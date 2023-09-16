@@ -1,4 +1,4 @@
-import { paginationOptsValidator } from 'convex/server';
+import { PaginationResult, paginationOptsValidator } from 'convex/server';
 import { v } from 'convex/values';
 import { PostWithUserDto } from '../src/app/types';
 import { Id } from './_generated/dataModel';
@@ -167,6 +167,75 @@ export const getAllPostsWithUser = query({
     const posts = await ctx.db
       .query('posts')
       .filter(q => q.eq(q.field('parentPostId'), undefined))
+      .order('desc')
+      .paginate(args.paginationOpts);
+
+    const postsWithUser = await Promise.all(
+      posts.page.map(async post => {
+        const user = await ctx.db.get(post.userId);
+
+        if (user === null) {
+          return {
+            ...post,
+            user: {
+              _id: '' as Id<'users'>,
+              _creationTime: 0,
+              clerkUsername: null,
+              clerkImageUrl: '',
+              clerkUserId: '',
+            },
+          };
+        }
+
+        return {
+          ...post,
+          user: {
+            _id: user._id,
+            _creationTime: user._creationTime,
+            clerkUsername: user.clerkUser.username,
+            clerkImageUrl: user.clerkUser.image_url,
+            clerkUserId: user.clerkUser.id,
+          },
+        };
+      })
+    );
+
+    return { ...posts, page: postsWithUser };
+  },
+});
+
+export const getAllPostsForFollowings = query({
+  args: { paginationOpts: paginationOptsValidator },
+  handler: async (ctx, args): Promise<PaginationResult<PostWithUserDto>> => {
+    const currentUser = await ctx.auth.getUserIdentity();
+
+    if (currentUser === null) {
+      return { isDone: true, continueCursor: '', page: [] };
+    }
+
+    const user = await userQuery(ctx, currentUser.subject);
+
+    if (user === null) {
+      return { isDone: true, continueCursor: '', page: [] };
+    }
+
+    const followings = await ctx.db
+      .query('follows')
+      .withIndex('by_follower', q => q.eq('follower', user._id))
+      .collect();
+
+    const posts = await ctx.db
+      .query('posts')
+      .filter(q =>
+        q.and(
+          q.or(
+            ...followings.map(following =>
+              q.eq(q.field('userId'), following.following)
+            )
+          ),
+          q.eq(q.field('parentPostId'), undefined)
+        )
+      )
       .order('desc')
       .paginate(args.paginationOpts);
 

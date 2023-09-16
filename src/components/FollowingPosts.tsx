@@ -1,14 +1,15 @@
 'use client';
 
 import { usePaginatedQuery } from 'convex/react';
+import Link from 'next/link';
 import { api } from '../../convex/_generated/api';
 import Loader from './Loader';
 import Post from './Post';
 
-export default function AllPosts() {
+export default function FollowingPosts() {
   const PAGE_SIZE = 10;
   const pager = usePaginatedQuery(
-    api.posts.getAllPostsWithUser,
+    api.posts.getAllPostsForFollowings,
     {},
     { initialNumItems: PAGE_SIZE }
   );
@@ -21,8 +22,15 @@ export default function AllPosts() {
     return (
       <div className='flex flex-col justify-center items-center gap-2'>
         <h2 className='text-2xl'>
-          Hmmm it doesn&apos;t look like anyone has posted.
+          Hmmm it doesn&apos;t look like you follow anyone or anyone who has
+          made a post yet.
         </h2>
+        <Link
+          href='/'
+          className='max-w-max py-1 px-3 text-white bg-primary-accent rounded-md'
+        >
+          Find someone to follow
+        </Link>
       </div>
     );
   }
