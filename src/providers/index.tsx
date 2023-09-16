@@ -16,10 +16,7 @@ const client = new ConvexReactClient(CONVEX_URL);
 
 export function ConvexProvider({ children }: { children: ReactNode }) {
   return (
-    <ConvexProviderWithClerk
-      client={client}
-      useAuth={useAuth}
-    >
+    <ConvexProviderWithClerk client={client} useAuth={useAuth}>
       {children}
     </ConvexProviderWithClerk>
   );
@@ -27,11 +24,7 @@ export function ConvexProvider({ children }: { children: ReactNode }) {
 
 export function NextThemesProvider({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider
-      attribute='class'
-      defaultTheme='light'
-      enableSystem
-    >
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
       {children}
     </ThemeProvider>
   );

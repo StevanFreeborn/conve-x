@@ -49,28 +49,28 @@ export default function UserProfile({ user }: { user: UserDto }) {
   }
 
   return (
-    <div className='w-full'>
-      <div className='shadow-md bg-gradient-to-r from-violet-600 via-violet-600 to-indigo-600 rounded-t-md pt-20 px-5'>
-        <div className='flex items-center gap-4 -mb-[25px]'>
-          <div className='flex-shrink-0'>
+    <div className="w-full">
+      <div className="shadow-md bg-gradient-to-r from-violet-600 via-violet-600 to-indigo-600 rounded-t-md pt-20 px-5">
+        <div className="flex items-center gap-4 -mb-[25px]">
+          <div className="flex-shrink-0">
             <Image
-              alt='user profile image'
+              alt="user profile image"
               src={user.clerkImageUrl}
               width={100}
               height={100}
-              className='rounded-full object-cover border-4 border-primary-accent'
+              className="rounded-full object-cover border-4 border-primary-accent"
             />
           </div>
-          <div className='flex flex-col-reverse mb-[25px] flex-1 min-w-0 gap-0.5 md:flex-row md:mb-0 md:gap-2'>
-            <div className='flex flex-col min-w-0 text-white'>
+          <div className="flex flex-col-reverse mb-[25px] flex-1 min-w-0 gap-0.5 md:flex-row md:mb-0 md:gap-2">
+            <div className="flex flex-col min-w-0 text-white">
               <h1
-                className='font-bold overflow-hidden text-ellipsis'
+                className="font-bold overflow-hidden text-ellipsis"
                 title={username}
               >
                 {username}
               </h1>
-              <div className='flex gap-2 items-center text-sm'>
-                <AiFillCalendar className='w-4 h-4' />
+              <div className="flex gap-2 items-center text-sm">
+                <AiFillCalendar className="w-4 h-4" />
                 {`Joined ${monthJoined} ${yearJoined}`}
               </div>
             </div>
@@ -78,7 +78,7 @@ export default function UserProfile({ user }: { user: UserDto }) {
               {isLoaded && isSignedIn && currentUser.id !== user.clerkUserId ? (
                 <button
                   onClick={handleFollowButtonClick}
-                  type='button'
+                  type="button"
                   className={`py-0.5 px-3 rounded-full text-sm border border-white text-white ${
                     isFollowing ? 'bg-primary-accent' : 'o'
                   }`}
@@ -90,22 +90,22 @@ export default function UserProfile({ user }: { user: UserDto }) {
           </div>
         </div>
       </div>
-      <div className='flex flex-1 bg-white dark:bg-primary-gray pl-5 border border-gray-600'>
-        <div className='flex flex-col min-h-[25px] items-start gap-1 py-1 pl-[116px] md:flex-row md:items-center md:gap-4'>
+      <div className="flex flex-1 bg-white dark:bg-primary-gray pl-5 border border-gray-600">
+        <div className="flex flex-col min-h-[25px] items-start gap-1 py-1 pl-[116px] md:flex-row md:items-center md:gap-4">
           {countDataLoaded ? (
             <>
               <div>
-                <span className='font-bold whitespace-nowrap'>{postCount}</span>{' '}
+                <span className="font-bold whitespace-nowrap">{postCount}</span>{' '}
                 posts
               </div>
-              <div className='min-w-0'>
-                <span className='font-bold whitespace-nowrap'>
+              <div className="min-w-0">
+                <span className="font-bold whitespace-nowrap">
                   {followerCount}
                 </span>{' '}
                 followers
               </div>
               <div>
-                <span className='font-bold whitespace-nowrap'>
+                <span className="font-bold whitespace-nowrap">
                   {followingCount}
                 </span>{' '}
                 following

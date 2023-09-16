@@ -25,14 +25,14 @@ export default function UserPosts({ user }: { user: UserDto }) {
 
   if (pager.isLoading === false && postsWithUser.length === 0) {
     return (
-      <div className='flex flex-col items-center justify-center border-t border-gray-600 w-full h-full'>
-        <div className='flex flex-col items-center gap-2'>
-          <h2 className='text-xl font-semibold'>
+      <div className="flex flex-col items-center justify-center border-t border-gray-600 w-full h-full">
+        <div className="flex flex-col items-center gap-2">
+          <h2 className="text-xl font-semibold">
             Hmm...it doesn&apos;t look like you&apos;ve posted anything.
           </h2>
           <Link
-            href='/posts/add'
-            className='inline-flex max-w-max items-center justify-center px-3 py-1 bg-primary-accent rounded-md text-white'
+            href="/posts/add"
+            className="inline-flex max-w-max items-center justify-center px-3 py-1 bg-primary-accent rounded-md text-white"
           >
             Make a post
           </Link>
@@ -42,12 +42,12 @@ export default function UserPosts({ user }: { user: UserDto }) {
   }
 
   return (
-    <div className='flex flex-col items-center w-full'>
-      <div className='flex flex-col items-center w-full'>
+    <div className="flex flex-col items-center w-full">
+      <div className="flex flex-col items-center w-full">
         {postsWithUser.map(post => (
           <div
             key={post._id}
-            className='w-full border border-t-0 border-gray-600 last:rounded-b-md p-1 last:mb-4'
+            className="w-full border border-t-0 border-gray-600 last:rounded-b-md p-1 last:mb-4"
           >
             <Post post={post} />
           </div>

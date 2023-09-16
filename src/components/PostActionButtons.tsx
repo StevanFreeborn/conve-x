@@ -29,14 +29,14 @@ export default function PostActionButton({
   }
 
   return (
-    <div className='flex items-center gap-4'>
+    <div className="flex items-center gap-4">
       {showReply && replyCount !== undefined ? (
         <Link
-          className='flex items-center justify-center gap-2 px-3 py-1 border border-gray-600 rounded-md hover:bg-primary-accent hover:text-white'
+          className="flex items-center justify-center gap-2 px-3 py-1 border border-gray-600 rounded-md hover:bg-primary-accent hover:text-white"
           href={{ pathname: `/posts/${postId}`, query: { reply: true } }}
         >
           <BsFillReplyFill />
-          <div className='flex items-center justify-center h-6 w-6 rounded-full text-xs bg-primary-gray text-white'>
+          <div className="flex items-center justify-center h-6 w-6 rounded-full text-xs bg-primary-gray text-white">
             {replyCount}
           </div>
         </Link>
@@ -44,13 +44,13 @@ export default function PostActionButton({
       {like !== undefined && likeCount !== undefined ? (
         <button
           onClick={handleLikeClick}
-          type='button'
+          type="button"
           className={`flex items-center justify-center gap-2 px-3 py-1 border border-gray-600 rounded-md ${
             isLiked ? 'text-primary-accent' : ''
           }`}
         >
-          <BiSolidLike className='flex-shrink-0' />
-          <div className='flex items-center justify-center h-6 w-6 rounded-full text-xs bg-primary-gray text-white'>
+          <BiSolidLike className="flex-shrink-0" />
+          <div className="flex items-center justify-center h-6 w-6 rounded-full text-xs bg-primary-gray text-white">
             {likeCount}
           </div>
         </button>

@@ -19,8 +19,8 @@ export default async function UserProfilePage({
   }
 
   return (
-    <main className='flex flex-col flex-1 w-full items-center'>
-      <div className='w-full max-w-4xl'>
+    <main className="flex flex-col flex-1 w-full items-center">
+      <div className="w-full max-w-4xl">
         <UserProfile user={user} />
         <UserPosts user={user} />
       </div>

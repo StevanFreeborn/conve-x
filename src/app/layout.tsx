@@ -19,11 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang='en'
-      className='w-full h-full'
-      suppressHydrationWarning
-    >
+    <html lang="en" className="w-full h-full" suppressHydrationWarning>
       <body
         className={`w-full h-full flex flex-col bg-white text-primary-gray dark:bg-primary-gray dark:text-white ${inter.className}`}
       >
@@ -32,12 +28,9 @@ export default function RootLayout({
         >
           <ConvexProvider>
             <NextThemesProvider>
-              <NextTopLoader
-                color='#3743e5'
-                showSpinner={false}
-              />
+              <NextTopLoader color="#3743e5" showSpinner={false} />
               <Navbar />
-              <div className='flex flex-col p-4 w-full h-full overflow-y-auto'>
+              <div className="flex flex-col p-4 w-full h-full overflow-y-auto">
                 {children}
                 <Footer />
               </div>

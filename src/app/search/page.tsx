@@ -16,9 +16,9 @@ export default function SearchPage({
   }
 
   return (
-    <main className='flex flex-col items-center flex-1'>
-      <div className='flex flex-col w-full max-w-4xl gap-4'>
-        <h1 className='text-4xl font-bold'>Here&apos;s what we found</h1>
+    <main className="flex flex-col items-center flex-1">
+      <div className="flex flex-col w-full max-w-4xl gap-4">
+        <h1 className="text-4xl font-bold">Here&apos;s what we found</h1>
         <SearchResults term={term} />
       </div>
     </main>

@@ -31,8 +31,8 @@ type Pager<T> = UsePaginatedQueryReturnType<
 
 function NoResults() {
   return (
-    <div className='flex flex-col justify-center items-center gap-2'>
-      <h2 className='text-xl'>
+    <div className="flex flex-col justify-center items-center gap-2">
+      <h2 className="text-xl">
         Hmmm it doesn&apos;t look like we could find anything.
       </h2>
     </div>
@@ -54,7 +54,7 @@ function UserSearchResults({
 
   return (
     <div>
-      <div className='flex flex-col gap-2'>
+      <div className="flex flex-col gap-2">
         {results.map(user => (
           <div key={user._id}>
             <UserProfile user={user} />
@@ -84,12 +84,12 @@ function PostSearchResults({
   }
 
   return (
-    <div className='flex flex-col items-center w-full'>
-      <div className='flex flex-col items-center w-full'>
+    <div className="flex flex-col items-center w-full">
+      <div className="flex flex-col items-center w-full">
         {results.map(post => (
           <div
             key={post._id}
-            className='w-full border border-t-0 border-gray-600 first:border-t last:rounded-b-md p-1 last:mb-4'
+            className="w-full border border-t-0 border-gray-600 first:border-t last:rounded-b-md p-1 last:mb-4"
           >
             <Post post={post} />
           </div>
@@ -120,36 +120,30 @@ export default function SearchResults({ term }: { term: string }) {
   );
 
   return (
-    <div className='flex flex-col gap-4'>
-      <div className='flex gap-2 border-b border-gray-600'>
+    <div className="flex flex-col gap-4">
+      <div className="flex gap-2 border-b border-gray-600">
         <button
           onClick={() => setCurrent('posts')}
           disabled={current === 'posts'}
-          type='button'
-          className='py-1 px-2 border-b-4 border-transparent disabled:border-primary-accent'
+          type="button"
+          className="py-1 px-2 border-b-4 border-transparent disabled:border-primary-accent"
         >
           Posts
         </button>
         <button
           onClick={() => setCurrent('users')}
           disabled={current === 'users'}
-          type='button'
-          className='py-1 px-2 border-b-4 border-transparent disabled:border-primary-accent'
+          type="button"
+          className="py-1 px-2 border-b-4 border-transparent disabled:border-primary-accent"
         >
           Users
         </button>
       </div>
 
       {current === 'posts' ? (
-        <PostSearchResults
-          pager={postsPager}
-          pageSize={PAGE_SIZE}
-        />
+        <PostSearchResults pager={postsPager} pageSize={PAGE_SIZE} />
       ) : (
-        <UserSearchResults
-          pager={usersPager}
-          pageSize={PAGE_SIZE}
-        />
+        <UserSearchResults pager={usersPager} pageSize={PAGE_SIZE} />
       )}
     </div>
   );
