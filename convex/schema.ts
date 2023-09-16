@@ -38,6 +38,7 @@ export default defineSchema(
       .index('by_clerk_id', ['clerkUser.id'])
       .searchIndex('search_by_username', {
         searchField: 'clerkUser.username',
+        filterFields: [],
       }),
     posts: defineTable({
       parentPostId: v.optional(v.id('posts')),

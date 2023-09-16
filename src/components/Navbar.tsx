@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from '@/hooks';
 import { SignedIn, SignedOut, useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -16,8 +17,10 @@ import ThemeButton from './ThemeButton';
 import UserButton from './UserButton';
 
 export default function Navbar() {
+  const [term, setTerm] = useState('');
   const { user } = useUser();
   const [navOpen, setNavOpen] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     function handler() {
@@ -57,13 +60,27 @@ export default function Navbar() {
         <ul className='flex flex-col w-full items-start gap-4 md:flex-row md:items-center md:max-w-min'>
           <SignedIn>
             <li className='flex w-full'>
-              <div className='flex w-full'>
+              <form
+                onSubmit={e => {
+                  e.preventDefault();
+                  router.push(`/search/${term}`);
+                }}
+                className='flex w-full relative'
+              >
                 <input
+                  onChange={e => setTerm(e.target.value)}
+                  value={term}
                   type='text'
                   placeholder='Search'
                   className='w-full md:w-[unset] py-1 px-2 rounded-md border border-gray-600 dark:bg-primary-gray dark:border-0'
                 />
-              </div>
+                <button
+                  disabled={!term || !term.trim()}
+                  type='submit'
+                >
+                  Search
+                </button>
+              </form>
             </li>
             <li>
               <div className='flex items-center gap-2'>

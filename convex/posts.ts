@@ -1,9 +1,9 @@
 import { paginationOptsValidator } from 'convex/server';
 import { v } from 'convex/values';
 import { PostWithUserDto } from '../src/app/types';
-import { Id } from './_generated/dataModel';
-import { mutation, query } from './_generated/server';
-import { userQuery } from './users';
+import { Doc } from './_generated/dataModel.d';
+import { QueryCtx, mutation, query } from './_generated/server';
+import { createUserDto, userQuery } from './users';
 
 export const createOrUpdatePost = mutation({
   args: {
@@ -82,13 +82,7 @@ export const getPostById = query({
 
     return {
       ...post,
-      user: {
-        _id: user._id,
-        _creationTime: user._creationTime,
-        clerkUsername: user.clerkUser.username,
-        clerkImageUrl: user.clerkUser.image_url,
-        clerkUserId: user.clerkUser.id,
-      },
+      user: createUserDto(user),
     };
   },
 });
@@ -102,36 +96,10 @@ export const getRepliesByParentId = query({
       .order('desc')
       .paginate(args.paginationOpts);
 
-    const repliesWithUserData = await Promise.all(
-      replies.page.map(async reply => {
-        const user = await ctx.db.get(reply.userId);
-
-        if (user === null) {
-          return {
-            ...reply,
-            user: {
-              _id: '' as Id<'users'>,
-              _creationTime: 0,
-              clerkUsername: null,
-              clerkImageUrl: '',
-              clerkUserId: '',
-            },
-          };
-        }
-
-        return {
-          ...reply,
-          user: {
-            _id: user._id,
-            _creationTime: user._creationTime,
-            clerkUsername: user.clerkUser.username,
-            clerkImageUrl: user.clerkUser.image_url,
-            clerkUserId: user.clerkUser.id,
-          },
-        };
-      })
-    );
-
+    const repliesWithUserData = await getPostsWithUsers({
+      ctx,
+      posts: replies.page,
+    });
     return { ...replies, page: repliesWithUserData };
   },
 });
@@ -170,35 +138,7 @@ export const getAllPostsWithUser = query({
       .order('desc')
       .paginate(args.paginationOpts);
 
-    const postsWithUser = await Promise.all(
-      posts.page.map(async post => {
-        const user = await ctx.db.get(post.userId);
-
-        if (user === null) {
-          return {
-            ...post,
-            user: {
-              _id: '' as Id<'users'>,
-              _creationTime: 0,
-              clerkUsername: null,
-              clerkImageUrl: '',
-              clerkUserId: '',
-            },
-          };
-        }
-
-        return {
-          ...post,
-          user: {
-            _id: user._id,
-            _creationTime: user._creationTime,
-            clerkUsername: user.clerkUser.username,
-            clerkImageUrl: user.clerkUser.image_url,
-            clerkUserId: user.clerkUser.id,
-          },
-        };
-      })
-    );
+    const postsWithUser = await getPostsWithUsers({ ctx, posts: posts.page });
 
     return { ...posts, page: postsWithUser };
   },
@@ -239,35 +179,7 @@ export const getAllPostsForFollowings = query({
       .order('desc')
       .paginate(args.paginationOpts);
 
-    const postsWithUser = await Promise.all(
-      posts.page.map(async post => {
-        const user = await ctx.db.get(post.userId);
-
-        if (user === null) {
-          return {
-            ...post,
-            user: {
-              _id: '' as Id<'users'>,
-              _creationTime: 0,
-              clerkUsername: null,
-              clerkImageUrl: '',
-              clerkUserId: '',
-            },
-          };
-        }
-
-        return {
-          ...post,
-          user: {
-            _id: user._id,
-            _creationTime: user._creationTime,
-            clerkUsername: user.clerkUser.username,
-            clerkImageUrl: user.clerkUser.image_url,
-            clerkUserId: user.clerkUser.id,
-          },
-        };
-      })
-    );
+    const postsWithUser = await getPostsWithUsers({ ctx, posts: posts.page });
 
     return { ...posts, page: postsWithUser };
   },
@@ -276,11 +188,41 @@ export const getAllPostsForFollowings = query({
 export const getPostsBySearchTerm = query({
   args: { term: v.string(), paginationOpts: paginationOptsValidator },
   handler: async (ctx, args) => {
-    return await ctx.db
+    const posts = await ctx.db
       .query('posts')
       .withSearchIndex('search_by_content', q =>
         q.search('content', args.term).eq('parentPostId', undefined)
       )
       .paginate(args.paginationOpts);
+
+    const postsWithUser = await getPostsWithUsers({ ctx, posts: posts.page });
+
+    return { ...posts, page: postsWithUser };
   },
 });
+
+async function getPostsWithUsers({
+  ctx,
+  posts,
+}: {
+  ctx: QueryCtx;
+  posts: Doc<'posts'>[];
+}) {
+  return await Promise.all(
+    posts.map(async post => {
+      const user = await ctx.db.get(post.userId);
+
+      if (user === null) {
+        return {
+          ...post,
+          user: createUserDto(user),
+        };
+      }
+
+      return {
+        ...post,
+        user: createUserDto(user),
+      };
+    })
+  );
+}

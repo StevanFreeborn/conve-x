@@ -1,6 +1,7 @@
 import { paginationOptsValidator } from 'convex/server';
 import { v } from 'convex/values';
 import { UserDto } from './../src/app/types/index';
+import { Doc, Id } from './_generated/dataModel';
 import {
   QueryCtx,
   internalMutation,
@@ -24,13 +25,7 @@ export const getUserByClerkId = query({
       return 'USER_NOT_FOUND';
     }
 
-    return {
-      _id: user._id,
-      _creationTime: user._creationTime,
-      clerkUsername: user.clerkUser.username,
-      clerkImageUrl: user.clerkUser.image_url,
-      clerkUserId: user.clerkUser.id,
-    };
+    return createUserDto(user);
   },
 });
 
@@ -43,13 +38,7 @@ export const getUserById = query({
       return 'USER_NOT_FOUND';
     }
 
-    return {
-      _id: user._id,
-      _creationTime: user._creationTime,
-      clerkUsername: user.clerkUser.username,
-      clerkImageUrl: user.clerkUser.image_url,
-      clerkUserId: user.clerkUser.id,
-    };
+    return createUserDto(user);
   },
 });
 
@@ -126,11 +115,35 @@ export const deleteUser = internalMutation({
 export const getUsersBySearchTerm = query({
   args: { term: v.string(), paginationOpts: paginationOptsValidator },
   handler: async (ctx, args) => {
-    return await ctx.db
+    const users = await ctx.db
       .query('users')
       .withSearchIndex('search_by_username', q =>
         q.search('clerkUser.username', args.term)
       )
       .paginate(args.paginationOpts);
+
+    const userDtos = users.page.map(createUserDto);
+
+    return { ...users, page: userDtos };
   },
 });
+
+export function createUserDto(user: Doc<'users'> | null) {
+  if (user === null) {
+    return {
+      _id: '' as Id<'users'>,
+      _creationTime: 0,
+      clerkUsername: null,
+      clerkImageUrl: '',
+      clerkUserId: '',
+    };
+  }
+
+  return {
+    _id: user._id,
+    _creationTime: user._creationTime,
+    clerkUsername: user.clerkUser.username,
+    clerkImageUrl: user.clerkUser.image_url,
+    clerkUserId: user.clerkUser.id,
+  };
+}
