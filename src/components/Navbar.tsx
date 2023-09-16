@@ -85,7 +85,7 @@ export default function Navbar() {
                 </div>
                 <Link
                   onClick={() => setNavOpen(false)}
-                  href='#'
+                  href='/following'
                 >
                   Following
                 </Link>
