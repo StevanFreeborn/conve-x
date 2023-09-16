@@ -1,6 +1,7 @@
 # conveX
 
-An [X](https://twitter.com/home) clone built as a submission for the [WebDevCody](https://www.youtube.com/@WebDevCody) [hackathon](https://hackathon.webdevcody.com/) using...
+An [X](https://twitter.com/home) An X inspired social site that supports following other users,
+liking posts, and sharing both long and short posts formatted with [Markdown](https://commonmark.org/help/). It was built as a submission for the [WebDevCody](https://www.youtube.com/@WebDevCody) [hackathon](https://hackathon.webdevcody.com/) using...
 
 - [TypeScript](https://www.typescriptlang.org/) - JavaScript's uptight brother
 - [Convex](https://www.convex.dev/) - Backend as a service
