@@ -1,22 +1,14 @@
-'use client';
+import AccountForm from '@/components/AccountForm';
+import { Metadata } from 'next';
 
-import { UserProfile } from '@clerk/nextjs';
+export const metadata: Metadata = {
+  title: 'conveX | Account',
+};
 
 export default function AccountPage() {
   return (
     <main className="flex flex-col items-center">
-      <UserProfile
-        appearance={{
-          elements: {
-            card: 'sm:pb-4 shadow-md dark:bg-secondary-gray [&_*:not(button):not(a)]:dark:text-white [&_.cl-internal-b3fm6y]:hidden',
-            navbar: 'hidden',
-            navbarMobileMenuRow: 'hidden',
-            formFieldInput: 'dark:bg-primary-gray dark:text-white',
-            profileSectionTitle: 'dark:border-white dark:border-opacity-10',
-            breadcrumbsItem: 'dark:text-white',
-          },
-        }}
-      />
+      <AccountForm />
     </main>
   );
 }

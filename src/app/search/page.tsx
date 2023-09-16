@@ -1,4 +1,9 @@
 import SearchResults from '@/components/SearchResults';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'conveX | Search',
+};
 
 export default function SearchPage({
   searchParams,

@@ -1,7 +1,11 @@
 import AllPosts from '@/components/AllPosts';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'conveX | Home',
+};
 
 export default function Home() {
-  throw Error();
   return (
     <main className="flex flex-col items-center flex-1">
       <div className="flex flex-col w-full max-w-4xl gap-4">

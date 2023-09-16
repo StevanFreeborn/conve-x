@@ -1,4 +1,9 @@
 import FollowingPosts from '@/components/FollowingPosts';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'conveX | Following',
+};
 
 export default function FollowingPage() {
   return (

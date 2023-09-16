@@ -8,6 +8,8 @@ export type UserDto = {
   clerkUserId: string;
 };
 
-export type PostWithUserDto = Omit<Doc<'posts'>, 'contentText'> & {
+export type PostDto = Omit<Doc<'posts'>, 'contentText'>;
+
+export type PostWithUserDto = PostDto & {
   user: UserDto;
 };
