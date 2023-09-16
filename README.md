@@ -8,3 +8,4 @@ An [X](https://twitter.com/home) clone built as a submission for the [WebDevCody
 - [Clerk](https://clerk.com/) - User authentication and management
 - [Tailwind](https://tailwindcss.com/) - Styling
 - [Vercel](https://vercel.com/) - Hosting
+- [Codemirror](https://codemirror.net/) - Editor
