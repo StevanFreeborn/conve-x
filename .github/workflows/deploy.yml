@@ -1,4 +1,4 @@
-name: Client Production Deployment
+name: Deployment
 env:
   WORKING_DIRECTORY: .
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
