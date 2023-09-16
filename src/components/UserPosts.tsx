@@ -47,7 +47,7 @@ export default function UserPosts({ user }: { user: UserDto }) {
         {postsWithUser.map(post => (
           <div
             key={post._id}
-            className='w-full border border-t-0 border-gray-600 first:border-t last:rounded-b-md p-1 last:mb-4'
+            className='w-full border border-t-0 border-gray-600 last:rounded-b-md p-1 last:mb-4'
           >
             <Post post={post} />
           </div>

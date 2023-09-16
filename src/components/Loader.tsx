@@ -11,7 +11,7 @@ export default function Loader({
 }) {
   if (isLoading) {
     return (
-      <div className='flex w-full items-center justify-center gap-2 p-5 border-t border-gray-600 text-sm'>
+      <div className='flex w-full items-center justify-center gap-2 p-5 text-sm'>
         <SpinningLoader className='animate-spin w-5 h-5' />
         Loading...
       </div>

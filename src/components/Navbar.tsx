@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { AiFillHome } from 'react-icons/ai';
 import { BiLogIn, BiPlus } from 'react-icons/bi';
-import { BsPersonPlusFill } from 'react-icons/bs';
+import { BsPersonPlusFill, BsSearch } from 'react-icons/bs';
 import { ImProfile } from 'react-icons/im';
 import {
   RiMenuFoldLine,
@@ -75,10 +75,11 @@ export default function Navbar() {
                   className='w-full md:w-[unset] py-1 px-2 rounded-md border border-gray-600 dark:bg-primary-gray dark:border-0'
                 />
                 <button
+                  className='flex items-center justify-center absolute right-0 top-1/2 transform -translate-x-1/2 -translate-y-1/2'
                   disabled={!term || !term.trim()}
                   type='submit'
                 >
-                  Search
+                  <BsSearch />
                 </button>
               </form>
             </li>

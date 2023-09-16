@@ -90,7 +90,7 @@ export default function UserProfile({ user }: { user: UserDto }) {
           </div>
         </div>
       </div>
-      <div className='flex flex-1 bg-white dark:bg-primary-gray pl-5 border border-gray-600 border-b-0'>
+      <div className='flex flex-1 bg-white dark:bg-primary-gray pl-5 border border-gray-600'>
         <div className='flex flex-col min-h-[25px] items-start gap-1 py-1 pl-[116px] md:flex-row md:items-center md:gap-4'>
           {countDataLoaded ? (
             <>

@@ -201,7 +201,6 @@ export const getPostsBySearchTerm = query({
       .withSearchIndex('search_by_content', q =>
         q.search('contentText', args.term)
       )
-      .filter(q => q.eq(q.field('parentPostId'), undefined))
       .paginate(args.paginationOpts);
 
     const postsWithUser = await getPostsWithUsers({ ctx, posts: posts.page });
