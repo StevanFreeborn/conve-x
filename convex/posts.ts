@@ -278,7 +278,9 @@ export const getPostsBySearchTerm = query({
   handler: async (ctx, args) => {
     return await ctx.db
       .query('posts')
-      .withSearchIndex('search_by_content', q => q.search('content', args.term))
+      .withSearchIndex('search_by_content', q =>
+        q.search('content', args.term).eq('parentPostId', undefined)
+      )
       .paginate(args.paginationOpts);
   },
 });
