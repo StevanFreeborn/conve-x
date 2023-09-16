@@ -1,7 +1,13 @@
+import NotFound from '@/app/not-found';
 import UserPosts from '@/components/UserPosts';
 import UserProfile from '@/components/UserProfile';
 import { getConvexClient } from '@/lib/convex';
+import { Metadata } from 'next';
 import { api } from '../../../../convex/_generated/api';
+
+export const metadata: Metadata = {
+  title: 'conveX | Profile',
+};
 
 export default async function UserProfilePage({
   params,
@@ -14,8 +20,7 @@ export default async function UserProfilePage({
   });
 
   if (user === 'USER_NOT_FOUND') {
-    // TODO: Show real not found component
-    return <div>Not Found</div>;
+    return <NotFound />;
   }
 
   return (

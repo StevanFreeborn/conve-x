@@ -1,5 +1,6 @@
 'use client';
 
+import { PostDto } from '@/app/types';
 import { useCodeMirror, useRouter } from '@/hooks';
 import { basicDark } from '@/lib/codemirror';
 import { indentWithTab } from '@codemirror/commands';
@@ -9,13 +10,13 @@ import { Compartment, EditorState, Text } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import { basicSetup } from 'codemirror';
 import { FormEvent, useEffect, useState } from 'react';
-import { Doc, Id } from '../../convex/_generated/dataModel';
+import { Id } from '../../convex/_generated/dataModel';
 import PostContent from './PostContent';
 
 export type SubmitActionParams = {
   clerkUserId: string;
   parentPostId?: Id<'posts'>;
-  post?: Doc<'posts'>;
+  post?: PostDto;
   currentDoc: string[];
 };
 
@@ -28,7 +29,7 @@ export default function Editor({
 }: {
   clerkUserId: string;
   parentPostId?: Id<'posts'>;
-  post?: Doc<'posts'>;
+  post?: PostDto;
   submitAction: ({
     clerkUserId,
     parentPostId,

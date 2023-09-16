@@ -10,7 +10,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'conveX',
+  description:
+    'An X inspired social site that supports liking, following, and posting short and long form content',
 };
 
 export default function RootLayout({

@@ -1,4 +1,9 @@
 import AllPosts from '@/components/AllPosts';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'conveX | Home',
+};
 
 export default function Home() {
   return (
