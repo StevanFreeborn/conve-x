@@ -20,6 +20,7 @@ export default function Footer() {
           <Link
             href="https://github.com/StevanFreeborn/conve-x"
             className="hover:text-primary-orange"
+            target="_blank"
           >
             Code
           </Link>
