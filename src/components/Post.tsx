@@ -44,30 +44,27 @@ export default function Post({
   }
 
   return (
-    <div className='flex w-full gap-4 p-8 bg-white dark:bg-secondary-gray flex-wrap'>
-      <div className='flex-shrink-0'>
+    <div className="flex w-full gap-4 p-8 bg-white dark:bg-secondary-gray flex-wrap">
+      <div className="flex-shrink-0">
         <Link href={`/profile/${post.user.clerkUserId}`}>
           <Image
-            alt='user profile image'
+            alt="user profile image"
             src={post.user.clerkImageUrl}
             width={40}
             height={40}
-            className='rounded-full object-cover border-4 border-primary-accent'
+            className="rounded-full object-cover border-4 border-primary-accent"
           />
         </Link>
       </div>
-      <div className='flex flex-1 flex-col gap-2 min-w-0'>
-        <div className='flex items-center justify-between gap-2'>
-          <div className='flex items-center gap-2 flex-wrap min-w-0'>
-            <div
-              className='overflow-hidden text-ellipsis'
-              title={username}
-            >
+      <div className="flex flex-1 flex-col gap-2 min-w-0">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 flex-wrap min-w-0">
+            <div className="overflow-hidden text-ellipsis" title={username}>
               {username}
             </div>
-            <div className='flex items-center gap-2'>
-              <GoDotFill className='w-3 h-3' />
-              <div className='text-xs'>
+            <div className="flex items-center gap-2">
+              <GoDotFill className="w-3 h-3" />
+              <div className="text-xs">
                 {`${postMonth} ${dayOfMonth}, ${postYear}`}
               </div>
             </div>
@@ -83,18 +80,12 @@ export default function Post({
         </div>
         <div>
           {limit && post.content.length > 10 ? (
-            <Link
-              className='font-semibold text-primary-accent'
-              href={postLink}
-            >
+            <Link className="font-semibold text-primary-accent" href={postLink}>
               Show more
             </Link>
           ) : null}
         </div>
-        <PostActionButton
-          postId={post._id}
-          showReply={showReply}
-        />
+        <PostActionButton postId={post._id} showReply={showReply} />
       </div>
     </div>
   );

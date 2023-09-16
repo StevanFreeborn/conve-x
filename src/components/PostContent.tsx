@@ -7,7 +7,7 @@ import './MarkdownContent.css';
 
 export default function PostContent({ content }: { content: string }) {
   return (
-    <div className='markdown-content'>
+    <div className="markdown-content">
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkEmoji]}
         components={{
@@ -19,15 +19,12 @@ export default function PostContent({ content }: { content: string }) {
                 {...props}
                 style={oneDark}
                 language={match[1]}
-                PreTag='div'
+                PreTag="div"
               >
                 {String(children).replace(/\n$/, '')}
               </SyntaxHighlighter>
             ) : (
-              <code
-                {...props}
-                className={className}
-              >
+              <code {...props} className={className}>
                 {children}
               </code>
             );

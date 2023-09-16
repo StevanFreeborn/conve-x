@@ -34,14 +34,24 @@ export default defineSchema(
         created_at: v.number(),
         updated_at: v.number(),
       }),
-    }).index('by_clerk_id', ['clerkUser.id']),
+    })
+      .index('by_clerk_id', ['clerkUser.id'])
+      .searchIndex('search_by_username', {
+        searchField: 'clerkUser.username',
+        filterFields: [],
+      }),
     posts: defineTable({
       parentPostId: v.optional(v.id('posts')),
       userId: v.id('users'),
       content: v.array(v.string()),
+      contentText: v.string(),
     })
       .index('by_user_id', ['userId'])
-      .index('by_parent_id', ['parentPostId']),
+      .index('by_parent_id', ['parentPostId'])
+      .searchIndex('search_by_content', {
+        searchField: 'contentText',
+        filterFields: ['parentPostId'],
+      }),
     likes: defineTable({
       postId: v.id('posts'),
       userId: v.id('users'),

@@ -19,10 +19,10 @@ export default function UserButton({ children }: { children?: ReactNode }) {
             'border-solid border-2 border-primary-accent focus:shadow-none',
         },
       }}
-      userProfileMode='navigation'
-      userProfileUrl='/account'
-      signInUrl='/login'
-      afterSignOutUrl='/'
+      userProfileMode="navigation"
+      userProfileUrl="/account"
+      signInUrl="/login"
+      afterSignOutUrl="/"
     />
   );
 }

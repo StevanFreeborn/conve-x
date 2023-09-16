@@ -68,34 +68,27 @@ export default function PostPage({
   }
 
   return (
-    <main className='flex flex-col flex-1 w-full items-center'>
-      <div className='flex flex-col w-full max-w-4xl gap-4'>
+    <main className="flex flex-col flex-1 w-full items-center">
+      <div className="flex flex-col w-full max-w-4xl gap-4">
         {post !== undefined && user.isLoaded ? (
           <>
-            <div className='flex flex-col min-w-0 p-1 rounded-md border border-gray-600'>
-              <Post
-                post={post}
-                limit={false}
-                showReply={false}
-              />
+            <div className="flex flex-col min-w-0 p-1 rounded-md border border-gray-600">
+              <Post post={post} limit={false} showReply={false} />
             </div>
-            <div className='w-full'>
+            <div className="w-full">
               <PostReplies parentId={post._id} />
             </div>
-            <div className='flex w-full h-80 gap-4'>
+            <div className="flex w-full h-80 gap-4">
               <div>
                 <Image
-                  alt='user profile image'
+                  alt="user profile image"
                   src={user.user.imageUrl}
                   width={40}
                   height={40}
-                  className='rounded-full object-cover border-4 border-primary-accent'
+                  className="rounded-full object-cover border-4 border-primary-accent"
                 />
               </div>
-              <div
-                ref={replyRef}
-                className='flex w-full'
-              >
+              <div ref={replyRef} className="flex w-full">
                 <Editor
                   clerkUserId={user.user.id}
                   parentPostId={post._id}
@@ -106,8 +99,8 @@ export default function PostPage({
             </div>
           </>
         ) : (
-          <div className='flex w-full justify-center gap-2'>
-            <SpinningLoader className='animate-spin w-5 h-5' /> Loading post...
+          <div className="flex w-full justify-center gap-2">
+            <SpinningLoader className="animate-spin w-5 h-5" /> Loading post...
           </div>
         )}
       </div>

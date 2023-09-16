@@ -43,15 +43,12 @@ export default function AddPost() {
   }
 
   return (
-    <main className='flex flex-col flex-1 w-full items-center'>
+    <main className="flex flex-col flex-1 w-full items-center">
       {user.isLoaded ? (
-        <Editor
-          clerkUserId={user.user.id}
-          submitAction={submitAction}
-        />
+        <Editor clerkUserId={user.user.id} submitAction={submitAction} />
       ) : (
-        <div className='flex gap-2 items-center'>
-          <SpinningLoader className='animate-spin w-5 h-5' />
+        <div className="flex gap-2 items-center">
+          <SpinningLoader className="animate-spin w-5 h-5" />
           Loading...
         </div>
       )}

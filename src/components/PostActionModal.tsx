@@ -36,7 +36,7 @@ export default function PostActionModal({ postId }: { postId: Id<'posts'> }) {
   }
 
   return (
-    <div className='relative'>
+    <div className="relative">
       <button onClick={() => setModalOpen(!modalOpen)}>
         <BiDotsHorizontalRounded />
       </button>
@@ -55,11 +55,8 @@ export default function PostActionModal({ postId }: { postId: Id<'posts'> }) {
               Edit post
             </Link>
           </li>
-          <li className='text-red-600'>
-            <button
-              onClick={handleDeleteButtonClick}
-              type='button'
-            >
+          <li className="text-red-600">
+            <button onClick={handleDeleteButtonClick} type="button">
               Delete post
             </button>
           </li>

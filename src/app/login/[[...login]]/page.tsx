@@ -4,7 +4,7 @@ import { SignIn } from '@clerk/nextjs';
 
 export default function LoginPage() {
   return (
-    <main className='flex flex-col flex-1 items-center'>
+    <main className="flex flex-col flex-1 items-center">
       <SignIn
         appearance={{
           elements: {

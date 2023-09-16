@@ -21,13 +21,10 @@ export default function PostReplies({ parentId }: { parentId: Id<'posts'> }) {
   }
 
   return (
-    <div className='flex flex-col-reverse items-center w-full gap-4'>
-      <div className='flex flex-col-reverse items-center w-full gap-4'>
+    <div className="flex flex-col-reverse items-center w-full gap-4">
+      <div className="flex flex-col-reverse items-center w-full gap-4">
         {pager.results.map(reply => (
-          <div
-            key={reply._id}
-            className='w-full'
-          >
+          <div key={reply._id} className="w-full">
             <Reply post={reply} />
           </div>
         ))}
