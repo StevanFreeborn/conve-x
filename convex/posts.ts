@@ -28,8 +28,10 @@ export const createOrUpdatePost = mutation({
       return 'CANNOT_POST_ON_BEHALF_OF_ANOTHER_USER';
     }
 
+    const contentText = args.content.join('\n');
+
     if (args.id) {
-      await ctx.db.patch(args.id, { content: args.content });
+      await ctx.db.patch(args.id, { content: args.content, contentText });
       return;
     }
 
@@ -37,6 +39,7 @@ export const createOrUpdatePost = mutation({
       userId: user._id,
       content: args.content,
       parentPostId: args.parentPostId,
+      contentText,
     });
   },
 });
@@ -44,12 +47,16 @@ export const createOrUpdatePost = mutation({
 export const getUsersPostById = query({
   args: { userId: v.id('users'), paginationOpts: paginationOptsValidator },
   handler: async (ctx, args) => {
-    return await ctx.db
+    const posts = await ctx.db
       .query('posts')
       .withIndex('by_user_id', q => q.eq('userId', args.userId))
       .filter(q => q.eq(q.field('parentPostId'), undefined))
       .order('desc')
       .paginate(args.paginationOpts);
+
+    const postDtos = posts.page.map(createPostDto);
+
+    return { ...posts, page: postDtos };
   },
 });
 
@@ -81,7 +88,7 @@ export const getPostById = query({
     }
 
     return {
-      ...post,
+      ...createPostDto(post),
       user: createUserDto(user),
     };
   },
@@ -100,6 +107,7 @@ export const getRepliesByParentId = query({
       ctx,
       posts: replies.page,
     });
+
     return { ...replies, page: repliesWithUserData };
   },
 });
@@ -191,8 +199,9 @@ export const getPostsBySearchTerm = query({
     const posts = await ctx.db
       .query('posts')
       .withSearchIndex('search_by_content', q =>
-        q.search('content', args.term).eq('parentPostId', undefined)
+        q.search('contentText', args.term)
       )
+      .filter(q => q.eq(q.field('parentPostId'), undefined))
       .paginate(args.paginationOpts);
 
     const postsWithUser = await getPostsWithUsers({ ctx, posts: posts.page });
@@ -210,19 +219,25 @@ async function getPostsWithUsers({
 }) {
   return await Promise.all(
     posts.map(async post => {
+      const postDto = createPostDto(post);
       const user = await ctx.db.get(post.userId);
 
       if (user === null) {
         return {
-          ...post,
+          ...postDto,
           user: createUserDto(user),
         };
       }
 
       return {
-        ...post,
+        ...postDto,
         user: createUserDto(user),
       };
     })
   );
+}
+
+function createPostDto(post: Doc<'posts'>) {
+  const { contentText, ...postDto } = post;
+  return postDto;
 }

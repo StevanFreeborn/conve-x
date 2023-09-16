@@ -63,7 +63,7 @@ export default function Navbar() {
               <form
                 onSubmit={e => {
                   e.preventDefault();
-                  router.push(`/search/${term}`);
+                  router.push(`/search?term=${term}`);
                 }}
                 className='flex w-full relative'
               >

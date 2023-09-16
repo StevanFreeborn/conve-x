@@ -44,11 +44,12 @@ export default defineSchema(
       parentPostId: v.optional(v.id('posts')),
       userId: v.id('users'),
       content: v.array(v.string()),
+      contentText: v.string(),
     })
       .index('by_user_id', ['userId'])
       .index('by_parent_id', ['parentPostId'])
       .searchIndex('search_by_content', {
-        searchField: 'content',
+        searchField: 'contentText',
         filterFields: ['parentPostId'],
       }),
     likes: defineTable({
