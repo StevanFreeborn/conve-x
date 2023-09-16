@@ -1,3 +1,4 @@
+import { paginationOptsValidator } from 'convex/server';
 import { v } from 'convex/values';
 import { UserDto } from './../src/app/types/index';
 import {
@@ -119,5 +120,17 @@ export const deleteUser = internalMutation({
     );
 
     await ctx.db.delete(userRecord._id);
+  },
+});
+
+export const getUsersBySearchTerm = query({
+  args: { term: v.string(), paginationOpts: paginationOptsValidator },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query('users')
+      .withSearchIndex('search_by_username', q =>
+        q.search('clerkUser.username', args.term)
+      )
+      .paginate(args.paginationOpts);
   },
 });

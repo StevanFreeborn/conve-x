@@ -1,4 +1,4 @@
-import { PaginationResult, paginationOptsValidator } from 'convex/server';
+import { paginationOptsValidator } from 'convex/server';
 import { v } from 'convex/values';
 import { PostWithUserDto } from '../src/app/types';
 import { Id } from './_generated/dataModel';
@@ -206,7 +206,7 @@ export const getAllPostsWithUser = query({
 
 export const getAllPostsForFollowings = query({
   args: { paginationOpts: paginationOptsValidator },
-  handler: async (ctx, args): Promise<PaginationResult<PostWithUserDto>> => {
+  handler: async (ctx, args) => {
     const currentUser = await ctx.auth.getUserIdentity();
 
     if (currentUser === null) {
@@ -270,5 +270,15 @@ export const getAllPostsForFollowings = query({
     );
 
     return { ...posts, page: postsWithUser };
+  },
+});
+
+export const getPostsBySearchTerm = query({
+  args: { term: v.string(), paginationOpts: paginationOptsValidator },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query('posts')
+      .withSearchIndex('search_by_content', q => q.search('content', args.term))
+      .paginate(args.paginationOpts);
   },
 });
