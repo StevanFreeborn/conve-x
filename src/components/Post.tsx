@@ -48,6 +48,7 @@ export default function Post({
       <div className="flex-shrink-0">
         <Link href={`/profile/${post.user.clerkUserId}`}>
           <Image
+            style={{ height: '40px', width: '40px' }}
             alt="user profile image"
             src={post.user.clerkImageUrl}
             width={40}
