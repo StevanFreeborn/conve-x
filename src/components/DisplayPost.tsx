@@ -78,6 +78,7 @@ export default function DisplayPost({
         <div className="flex w-full h-80 gap-4">
           <div>
             <Image
+              style={{ height: '40px', width: '40px' }}
               alt="user profile image"
               src={user.user.imageUrl}
               width={40}

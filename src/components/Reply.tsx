@@ -20,6 +20,7 @@ export default function Reply({ post }: { post: PostWithUserDto }) {
       <div>
         <Link href={`/profile/${post.user.clerkUserId}`}>
           <Image
+            style={{ height: '40px', width: '40px' }}
             alt="user profile image"
             src={post.user.clerkImageUrl}
             width={40}

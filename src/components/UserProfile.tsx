@@ -54,6 +54,7 @@ export default function UserProfile({ user }: { user: UserDto }) {
         <div className="flex items-center gap-4 -mb-[25px]">
           <div className="flex-shrink-0">
             <Image
+              style={{ height: '100px', width: '100px' }}
               alt="user profile image"
               src={user.clerkImageUrl}
               width={100}
