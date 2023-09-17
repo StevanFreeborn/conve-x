@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function AccountPage() {
   return (
-    <main className="flex flex-col items-center">
+    <main className="flex flex-col flex-1 items-center">
       <AccountForm />
     </main>
   );
