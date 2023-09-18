@@ -2,6 +2,7 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { ConvexProvider, NextThemesProvider } from '@/providers';
 import { ClerkProvider } from '@clerk/nextjs';
+import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
@@ -38,6 +39,7 @@ export default function RootLayout({
             </NextThemesProvider>
           </ConvexProvider>
         </ClerkProvider>
+        <Analytics />
       </body>
     </html>
   );
