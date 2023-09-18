@@ -81,7 +81,6 @@ export default function Editor({
     } catch (error) {
       console.log(error);
     } finally {
-      console.log('here');
       setCreatingOrUpdating(false);
       setCurrentDoc(['']);
       editorView?.dispatch({
